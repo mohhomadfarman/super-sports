@@ -1,10 +1,11 @@
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 //pass user data as tokenData which you want to save in jwt
 const getRefreshToken = (tokenData) => {
   try {
-    let refreshToken = jwt.sign(tokenData, process.env.REFRESH_TOKEN_SECRET_KEY, {
-      expiresIn: process.env.REFRESH_TOKEN_EXPIRY_TIME,
+    let refreshToken = jwt.sign(tokenData, "HHKSHDUUEJKS", {
+      expiresIn: "8h",
     });
     return refreshToken;
   } catch (error) {
@@ -15,16 +16,17 @@ const getRefreshToken = (tokenData) => {
 //provide refressh token and get the access token if valid
 const getAccessToken = (refreshToken) => {
   try {
-    let tokenData = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY);
+    let tokenData = jwt.verify(refreshToken, "HHKSHDUUEJKS");
     let accessToken = jwt.sign(
       {
         firstName: tokenData.firstName,
         lastName: tokenData.lastName,
         email: tokenData.email,
         userid: tokenData.userid,
+        userRole: tokenData.userRole,
       },
-      process.env.ACCESS_TOKEN_SECRET_KEY,
-      { expiresIn: process.env.ACCESS_TOKEN_EXPIRY_TIME }
+      "HHKSHDUUEJKS",
+      { expiresIn: "8h" }
     );
     return accessToken;
   } catch (error) {
@@ -37,6 +39,8 @@ const getTokens = (tokenData) => {
   try {
     const refreshToken = getRefreshToken(tokenData);
     const accessToken = getAccessToken(refreshToken);
+   
+
     return { accessToken, refreshToken };
   } catch (error) {
     throw new Error(error);

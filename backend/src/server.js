@@ -13,9 +13,11 @@ app.use("/booking", bookingRouter);
 
 app.get("/", (req, res) => res.send("Hello world. Welcome to word super sports api."));
 
+dbConnect();
+
 app.listen(process.env.PORT, async () => {
   try {
-    await dbConnect();
+    // await dbConnect();
     console.log(`Server running at http://localhost:${process.env.PORT}`);
   } catch (error) {
     console.log("Unable to connect to database");

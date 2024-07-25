@@ -1,6 +1,6 @@
 const express = require("express");
 const { getUser, createAccount, getTokens, getAccessToken } = require("../controllers");
-
+require("dotenv").config();
 const user = express.Router();
 
 user.post("/signup", async (req, res) => {
@@ -32,7 +32,9 @@ user.post("/login", async (req, res) => {
         lastName: user.lastName,
         email: user.email,
         userid: user._id,
+        userRole: user.role,
       });
+      console.log(accessToken,refreshToken)
 
       return res.send({ message: "Login successfull", data: { accessToken, refreshToken } });
     } else {
