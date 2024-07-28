@@ -1,6 +1,9 @@
 // app.js
 const express = require("express");
 const mongoose = require("mongoose");
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+
 const authRoutes = require("./routes/authRoutes");
 const cityRoutes = require("./routes/cityRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
@@ -12,9 +15,37 @@ const { mongoURI, port } = require("./config");
 require("dotenv").config();
 
 const app = express();
-
 app.use(express.json());
 app.use('/uploads', express.static('uploads')); // Serve uploaded files
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Tournament Management API",
+      version: "1.0.0",
+      description: "API documentation for the Tournament Management application",
+    },
+    servers: [
+      {
+        url: "http://localhost:8080",
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+  },
+  apis: ["./routes/*.js"],
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/cities", cityRoutes);
