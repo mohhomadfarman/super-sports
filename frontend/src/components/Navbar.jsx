@@ -24,11 +24,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutAPI } from "../store/auth/action";
 import darkLogo from "../assets/dark_logo.png";
 import lightLogo from "../assets/light_logo.png";
+import { getUserId } from "../utils_sec/auth";
 
-const Links = [
-  { name: "New Event", path: "/newEvent" },
+const AdminLinks = [
+  { name: "New Event", path: "/event" },
   { name: "Bookings", path: "/requests" },
-  { name: "Pending For My Approval", path: "/pendingApproval" },
+];
+const Links = [
+  { name: "New Event", path: "/event" },
+  { name: "Bookings", path: "/requests" },
 ];
 
 const NavLink = ({ path, name }) => (
@@ -55,6 +59,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logoutAPI());
+    window.location.reload();
     toast({
       title: "Logout Successfull",
       status: "success",
@@ -84,9 +89,16 @@ const Navbar = () => {
             <Image width={"150px"} src={colorMode === "light" ? lightLogo : darkLogo} />
           </Link>
           <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
-            {Links.map((link) => (
-              <NavLink key={link.path} {...link} />
-            ))}
+            {getUserId()?.userRole === "admin" ?
+              AdminLinks.map((link) => (
+                <NavLink key={link.path} {...link} />
+              )) :
+              Links.map((link) => (
+                <NavLink key={link.path} {...link} />
+              ))
+
+             }
+            
           </HStack>
         </HStack>
         <Flex alignItems={"center"} gap="4">
@@ -119,9 +131,15 @@ const Navbar = () => {
       {isOpen ? (
         <Box pb={4} display={{ md: "none" }}>
           <Stack as={"nav"} spacing={4}>
-            {Links.map((link) => (
-              <NavLink key={link.path} {...link} />
-            ))}
+          {getUserId()?.userRole === "admin" ?
+              AdminLinks.map((link) => (
+                <NavLink key={link.path} {...link} />
+              )) :
+              Links.map((link) => (
+                <NavLink key={link.path} {...link} />
+              ))
+
+             }
           </Stack>
         </Box>
       ) : null}

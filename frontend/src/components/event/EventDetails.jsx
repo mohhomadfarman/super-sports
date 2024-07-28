@@ -17,6 +17,7 @@ import { useParams } from "react-router-dom";
 import { createBookingAPI, getApprovedPlayerListAPI } from "../../store/booking/actions";
 import { getEventDetailsAPI } from "../../store/event/action";
 import PlayerList from "./PlayerList";
+import { getUserId } from "../../utils_sec/auth";
 
 const EventDetails = () => {
   const { eventDetails, isloading } = useSelector((store) => store.event);
@@ -54,6 +55,8 @@ const EventDetails = () => {
       });
   };
 
+  const role = getUserId()?.userRole;
+
   return (
     <>
       {isloading ? (
@@ -79,7 +82,11 @@ const EventDetails = () => {
             <Text color={"tomato"}>
               Organizer: {eventDetails.organizer.firstName} {eventDetails.organizer.lastName}
             </Text>
-            <Button
+
+            {/* -- */}
+            {role === 'user' && (
+              <>
+              <Button
               disabled={
                 eventDetails.player_limits === eventDetails.bookedCount ||
                 approvedPlayerList?.length
@@ -89,8 +96,14 @@ const EventDetails = () => {
               onClick={handleBooking}
             >
               {approvedPlayerList?.length ? "Already joined" : "Request"}
-            </Button>
+            </Button> 
+            
+            </>
+            )
+            }
             {approvedPlayerList?.length && <PlayerList players={approvedPlayerList} />}
+           
+            {/* -- */}
           </VStack>
         </Stack>
       ) : (

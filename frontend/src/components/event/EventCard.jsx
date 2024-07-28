@@ -2,10 +2,11 @@ import { Tag, Text, VStack, Button, Image, useColorModeValue, Box } from "@chakr
 import React from "react";
 import { Link as RichLink } from "react-router-dom";
 import PlayerList from "./PlayerList";
+import { getUserId } from "../../utils_sec/auth";
 
 const EventCard = (event) => {
   const { _id, title, description, picture, schedule, player_limits, category, organizer } = event;
-
+  const role = getUserId()?.userRole;
   return (
     <VStack
       justifyContent="space-between"
@@ -21,7 +22,7 @@ const EventCard = (event) => {
           Category: <Tag>{category}</Tag>
         </Text>
         <Text fontSize={"sm"}>Schedule: {new Date(schedule).toLocaleString()}</Text>
-        <Button
+        {role === "user" && <Button
           as={RichLink}
           to={`/eventDetails/${_id}`}
           size="sm"
@@ -29,7 +30,8 @@ const EventCard = (event) => {
           variant="outline"
         >
           More
-        </Button>
+        </Button> }
+        
       </VStack>
     </VStack>
   );

@@ -38,11 +38,11 @@ const PendingForMyApprovalPage = () => {
       {isloading ? (
         <Spinner thickness="4px" color="blue.500" size="xl" />
       ) : myPendingApprovalBookings?.length ? (
-        <SimpleGrid w="full" gap="4" p="5" columns={{ base: 1, md: 2, lg: 4 }}>
+        <>
           {myPendingApprovalBookings?.map((el) => {
-            return <PendingBookingCard key={el._id} data={el} handleBooking={handleBooking} />;
+            return <PendingBookingCard card="request" key={el._id} data={el} handleBooking={handleBooking} />;
           })}
-        </SimpleGrid>
+        </>
       ) : (
         <Text mt="5">No Pending Bookings..</Text>
       )}

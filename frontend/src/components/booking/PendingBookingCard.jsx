@@ -1,17 +1,19 @@
 import React from "react";
 import { Box, Button, HStack, Tag, Text, useColorModeValue, VStack } from "@chakra-ui/react";
 
-const PendingBookingCard = ({ data, handleBooking }) => {
+const PendingBookingCard = ({ data, handleBooking,card }) => {
   const { _id, status, event, requester } = data;
-
   return (
     <VStack
+     width="full"
+  
       justifyContent="space-between"
       shadow={"md"}
       bg={useColorModeValue("white", "gray.700")}
       alignItems={"flex-start"}
     >
       <Box
+        
         backgroundImage={event.picture}
         backgroundSize="cover"
         width="full"

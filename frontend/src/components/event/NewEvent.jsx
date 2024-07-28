@@ -23,7 +23,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createEventAPI } from "../../store/event/action";
-import { sportsName } from "../../utils/sportsName";
+import { Cities, Matchs, sportsName } from "../../utils/sportsName";
 
 const initData = {
   title: "",
@@ -67,6 +67,7 @@ const NewEvent = () => {
       });
   };
 
+
   return (
     <VStack bg={useColorModeValue("gray.50", "gray.800")}>
       <VStack spacing={8} mx={"auto"} maxW={"xl"} p={6}>
@@ -88,6 +89,30 @@ const NewEvent = () => {
                 onChange={handleInput}
               />
             </FormControl>
+            {/* --------- */}
+            <FormControl isRequired>
+              <FormLabel>Match</FormLabel>
+              <Select placeholder="Select Match" name="match" onChange={handleInput}>
+                {Matchs.map((match) => (
+                  <option key={match} value={match}>
+                    {match}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+            {/* --------- */}
+              {/* --------- */}
+              <FormControl isRequired>
+              <FormLabel>Cities</FormLabel>
+              <Select placeholder="Select Cities" name="Cities" onChange={handleInput}>
+                {Cities.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+            {/* --------- */}
             <FormControl isRequired>
               <FormLabel>Category</FormLabel>
               <Select placeholder="Select Category" name="category" onChange={handleInput}>

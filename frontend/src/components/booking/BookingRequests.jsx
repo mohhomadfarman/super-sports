@@ -12,6 +12,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getBookingAPI } from "../../store/booking/actions";
 import BookingCard from "./BookingCard";
+import { getUserId } from "../../utils_sec/auth";
+import PendingForMyApprovalPage from "../../pages/Booking/PendingForMyApprovalPage";
 
 const BookingRequests = () => {
   const { bookings } = useSelector((store) => store.booking);
@@ -42,15 +44,31 @@ const BookingRequests = () => {
               </SimpleGrid>
             </TabPanel>
             {/* for Pending request */}
-            <TabPanel>
-              <SimpleGrid w="full" gap="4" columns={{ base: 1, md: 2, lg: 4 }}>
-                {bookings
-                  .filter((booking) => booking.status === "Pending")
-                  .map((el) => {
-                    return <BookingCard key={el._id} {...el} />;
-                  })}
-              </SimpleGrid>
-            </TabPanel>
+            {getUserId()?.userRole === "user" && 
+             <TabPanel>
+             <SimpleGrid w="full" gap="4" columns={{ base: 1, md: 2, lg: 4 }}>
+               {bookings
+                 .filter((booking) => booking.status === "Pending")
+                 .map((el) => {
+                   return <BookingCard key={el._id} {...el} />;
+                 })}
+                 
+             </SimpleGrid>
+           </TabPanel>
+            }
+              {getUserId()?.userRole === "admin" && 
+             <TabPanel>
+             <SimpleGrid w="full" gap="4" columns={{ base: 1, md: 2, lg: 4 }}>
+               {bookings
+                 .filter((booking) => booking.status === "Pending")
+                 .map((el) => {
+                   return  <PendingForMyApprovalPage />;
+                 })}
+                 
+             </SimpleGrid>
+           </TabPanel>
+            }
+           
 
             {/* for rejected request */}
             <TabPanel>

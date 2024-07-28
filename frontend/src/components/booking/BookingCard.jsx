@@ -30,7 +30,7 @@ const BookingCard = (data) => {
         </Text>
         <Button
           as={RichLink}
-          to={`/eventDetails/${event._id}`}
+          to={`/events/${event._id}`}
           size="sm"
           colorScheme={"blue"}
           variant="outline"
