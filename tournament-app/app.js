@@ -46,6 +46,7 @@ const swaggerOptions = {
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/uploads', express.static('uploads'));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/cities", cityRoutes);

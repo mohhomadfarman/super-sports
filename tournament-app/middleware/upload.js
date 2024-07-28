@@ -1,4 +1,3 @@
-// middleware/upload.js
 const multer = require("multer");
 
 const storage = multer.diskStorage({
@@ -10,17 +9,18 @@ const storage = multer.diskStorage({
   },
 });
 
-const videoFilter = (req, file, cb) => {
-  if (!file.mimetype.startsWith("video/")) {
-    return cb(new Error("Please upload a video"), false);
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("video/") || file.mimetype.startsWith("image/")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Please upload an image or video"), false);
   }
-  cb(null, true);
 };
 
 const upload = multer({
   storage: storage,
-  fileFilter: videoFilter,
-  limits: { fileSize: 60 * 1024 * 1024 }, // Limit to 1 minute of video
+  fileFilter: fileFilter,
+  limits: { fileSize: 60 * 1024 * 1024 }, // Limit to 60 MB
 });
 
 module.exports = upload;

@@ -14,7 +14,7 @@ const router = express.Router();
  *     tags: [Joining Contests]
  */
 
-router.post('/join/:contestId', auth(), upload.single('video'), joinedContestController.joinContest);
+router.post('/join/:contestId', auth('user'), upload.single('submission'), joinedContestController.joinContest);
 /**
  * @swagger
  * /joinedContests/delete/:contestId:

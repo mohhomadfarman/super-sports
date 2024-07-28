@@ -1,11 +1,14 @@
 // controllers/joinedContestController.js
 const JoinedContest = require('../models/JoinedContest');
+const path = require('path');
+const fs = require('fs');
 
-// Join Contest with Video Submission
 exports.joinContest = async (req, res) => {
   try {
     const userId = req.user._id;
     const contestId = req.params.contestId;
+    
+    if (!req.file) return res.status(400).send("No video uploaded");
     const videoPath = req.file.path;
 
     const existingEntry = await JoinedContest.findOne({ user: userId, contest: contestId });
@@ -23,17 +26,29 @@ exports.joinContest = async (req, res) => {
     res.status(500).send(error.message);
   }
 };
-
 // Delete Submission
 exports.deleteSubmission = async (req, res) => {
   try {
     const userId = req.user._id;
     const contestId = req.params.contestId;
 
-    const joinedContest = await JoinedContest.findOneAndDelete({ user: userId, contest: contestId });
-    if (!joinedContest) return res.status(404).send("Submission not found");
+    // Find the submission entry
+    const entry = await JoinedContest.findOne({ user: userId, contest: contestId });
+    if (!entry) return res.status(404).send("Submission not found");
 
-    res.send("Submission deleted");
+    // Delete the file from the uploads folder
+    const filePath = entry.submission;
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error("Failed to delete the file:", err);
+        return res.status(500).send("Failed to delete the file");
+      }
+    });
+
+    // Delete the entry from the database
+    await JoinedContest.deleteOne({ _id: entry._id });
+
+    res.status(200).send("Submission deleted successfully");
   } catch (error) {
     res.status(500).send(error.message);
   }

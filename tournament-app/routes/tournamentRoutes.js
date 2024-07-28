@@ -7,6 +7,7 @@ const {
   updateTournament,
   deleteTournament,
 } = require("../controllers/tournamentController");
+const upload = require("../middleware/upload");
 
 const router = express.Router();
 
@@ -17,7 +18,7 @@ const router = express.Router();
  *     summary: Create tournaments
  *     tags: [Tournaments]
  */
-router.post("/", auth("admin"), createTournament);
+router.post('/', auth(), upload.single('file'), createTournament);
 /**
  * @swagger
  * /tournaments:
@@ -33,7 +34,7 @@ router.get("/", auth(), getTournaments);
  *     summary: Upadte tournaments
  *     tags: [Tournaments]
  */
-router.put("/:id", auth("admin"), updateTournament);
+router.put("/:id", auth("admin"),upload.single('file'), updateTournament);
 /**
  * @swagger
  * /tournaments/:id:

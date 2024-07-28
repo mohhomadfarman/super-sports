@@ -9,6 +9,7 @@ const {
   joinMatch,
   getJoinedMatches,
 } = require("../controllers/matchController");
+const upload = require("../middleware/upload");
 
 const router = express.Router();
 
@@ -19,7 +20,7 @@ const router = express.Router();
  *     summary: Create Match
  *     tags: [Match]
  */
-router.post("/", auth("admin"), createMatch);
+router.post("/", auth("admin"),upload.single('file'), createMatch);
 /**
  * @swagger
  * /matches:

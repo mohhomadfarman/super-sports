@@ -7,6 +7,7 @@ const {
   updateContest,
   deleteContest,
 } = require('../controllers/contestController');
+const upload = require('../middleware/upload');
 
 const router = express.Router();
 
@@ -47,7 +48,7 @@ const router = express.Router();
  *       400:
  *         description: Bad request
  */
-router.post('/', auth(), createContest);
+router.post('/', auth(),upload.single('images'), createContest);
 
 /**
  * @swagger
@@ -114,7 +115,7 @@ router.get('/:id', getContestById);
  *       404:
  *         description: Contest not found
  */
-router.put('/:id', auth(), updateContest);
+router.put('/:id', auth(), upload.single('images'), updateContest);
 
 /**
  * @swagger
