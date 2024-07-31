@@ -42,6 +42,15 @@ exports.getTournaments = async (req, res) => {
   }
 };
 
+exports.getSingleTournaments = async (req, res) =>{
+  const tournamentId = req.params.id;
+  try {
+    const tournaments = await Tournament.findById(tournamentId).populate("city matches");
+    res.send(tournaments);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
 
 exports.updateTournament = async (req, res) => {
   try {

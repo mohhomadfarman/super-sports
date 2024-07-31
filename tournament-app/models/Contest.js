@@ -7,6 +7,7 @@ const contestSchema = new mongoose.Schema({
   images: { type: String,required: true },
   cities: { type: mongoose.Schema.Types.ObjectId, ref: "City",required: true },
   categories: { type: mongoose.Schema.Types.ObjectId, ref: "Category",required: true },
+  matchId: { type: mongoose.Schema.Types.ObjectId, ref: "Match",default:null},
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
 });

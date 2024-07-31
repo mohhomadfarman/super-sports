@@ -6,6 +6,7 @@ const {
   getTournaments,
   updateTournament,
   deleteTournament,
+  getSingleTournaments,
 } = require("../controllers/tournamentController");
 const upload = require("../middleware/upload");
 
@@ -34,6 +35,9 @@ router.get("/", auth(), getTournaments);
  *     summary: Upadte tournaments
  *     tags: [Tournaments]
  */
+
+router.get("/:id", auth(), getSingleTournaments);
+
 router.put("/:id", auth("admin"),upload.single('file'), updateTournament);
 /**
  * @swagger

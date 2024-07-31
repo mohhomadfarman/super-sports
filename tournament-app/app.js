@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-
+const cors = require('cors')
 const authRoutes = require("./routes/authRoutes");
 const cityRoutes = require("./routes/cityRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
@@ -13,8 +13,8 @@ const contestRoutes = require("./routes/contestRoutes");
 const joinedContestRoutes = require("./routes/joinedContestRoutes");
 const { mongoURI, port } = require("./config");
 require("dotenv").config();
-
 const app = express();
+app.use(cors())
 app.use(express.json());
 app.use('/uploads', express.static('uploads')); // Serve uploaded files
 

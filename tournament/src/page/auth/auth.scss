@@ -1,0 +1,30 @@
+
+
+.bannerlogin
+{
+    background-image: url('../../../public/images/loginGb.jpg');
+    width: 100%;
+    min-height: 625px;
+    max-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.form-container
+{
+    max-width: 350px;
+    margin: auto;
+    background-color: #fff;
+    .form-label{
+        font-size: 14px;
+        color: rgb(66, 66, 66);
+    }
+    .form-control{
+        &:focus{
+            box-shadow: none;
+        }
+    }
+}

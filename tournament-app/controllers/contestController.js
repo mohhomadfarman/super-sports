@@ -5,7 +5,7 @@ const path = require('path');
 // Create Contest
 exports.createContest = async (req, res) => {
   try {
-    const { name, description, cities, categories } = req.body;
+    const { name, description, cities, categories,matchId,startDate,endDate } = req.body;
     // Handle image file upload if available
     const image = req.file ? req.file.path : undefined;
 
@@ -16,6 +16,7 @@ exports.createContest = async (req, res) => {
       images: image,
       cities,
       categories,
+      matchId,
       startDate,
       endDate
     });
@@ -33,7 +34,7 @@ exports.createContest = async (req, res) => {
 // Get All Contests
 exports.getContests = async (req, res) => {
   try {
-    const contests = await Contest.find().populate('cities categories');
+    const contests = await Contest.find().populate('cities categories matchId');
     res.send(contests);
   } catch (error) {
     res.status(500).send(error.message);
