@@ -23,5 +23,6 @@ router.post('/join/:contestId', auth('user'), upload.single('submission'), joine
  *     tags: [Joining Contests]
  */
 router.delete('/delete/:contestId', auth(), joinedContestController.deleteSubmission);
+router.get('/', auth(), joinedContestController.getSubmission);
 
 module.exports = router;

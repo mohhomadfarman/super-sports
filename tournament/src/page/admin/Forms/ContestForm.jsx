@@ -10,12 +10,10 @@ function ContestForm({ handleClose }) {
   const dispatch = useDispatch();
   const cityList = useSelector((state) => state?.GetCities?.items);
   const categoriesList = useSelector((state) => state?.GetCategories?.items);
-  const matchList = useSelector((state) => state?.GetMatches?.items);
 
   useEffect(() => {
     dispatch(GetCities());
     dispatch(GetCategories());
-    dispatch(Getmatches());
   }, [dispatch]);
 
   const [formData, setFormData] = useState({
@@ -39,10 +37,9 @@ function ContestForm({ handleClose }) {
     const form = new FormData();
     form.append('name', formData.name);
     form.append('description', formData.description);
-    form.append('images', formData.image);
+    form.append('image', formData.image);
     form.append('cities', formData.cities);
     form.append('categories', formData.categories);
-    form.append('matchId', formData.matchId);
     form.append('startDate', formData.startDate);
     form.append('endDate', formData.endDate);
 
@@ -136,26 +133,7 @@ function ContestForm({ handleClose }) {
           </select>
         </div>
       </div>
-      <div className="mb-3">
-        <div className='form-label'>
-          Multiround Matches
-          <select 
-            className='form-control' 
-            name="matchId" 
-            value={formData.matchId} 
-            onChange={handleChange}
-          >
-            <option value="">Select a match</option>
-            {matchList?.map((item) => (
-                item?.type === "rounds" ?
-                <option key={item?._id} value={item?._id}>
-                {item?.name}
-              </option> :
-              <></>
-            ))}
-          </select>
-        </div>
-      </div>
+    
       <div className="mb-3">
         <div className='form-label'>
           Start Date

@@ -1,52 +1,38 @@
 // controllers/contestController.js
 const Contest = require('../models/Contest');
+const JoinedContest = require('../models/JoinedContest');
+const path = require('path');
 const fs = require('fs');
-const path = require('path'); 
+
 // Create Contest
 exports.createContest = async (req, res) => {
   try {
-    const { name, description, cities, categories,matchId,startDate,endDate } = req.body;
-    // Handle image file upload if available
-    const image = req.file ? req.file.path : undefined;
+    const { name, description, cities, categories, startDate, endDate } = req.body;
+    const imagePath = req.file ? req.file.path : null;
 
-    // Create a new contest
-    const newContest = new Contest({
+    const contest = new Contest({
       name,
       description,
-      images: image,
+      image: imagePath,
       cities,
       categories,
-      matchId,
       startDate,
       endDate
     });
 
-    // Save the contest to the database
-    await newContest.save();
-
-    // Send the response back to the client
-    res.status(201).json(newContest);
-  } catch (error) {
-    console.error(error.message); // Log error for debugging
-    res.status(400).json({ message: "Error creating contest", error: error.message });
-  }
-};
-// Get All Contests
-exports.getContests = async (req, res) => {
-  try {
-    const contests = await Contest.find().populate('cities categories matchId');
-    res.send(contests);
+    await contest.save();
+    res.status(201).send(contest);
   } catch (error) {
     res.status(500).send(error.message);
   }
 };
 
-// Get Contest by ID
-exports.getContestById = async (req, res) => {
+// Create Contest
+exports.getContest = async (req, res) => {
   try {
-    const contest = await Contest.findById(req.params.id).populate('cities categories');
-    if (!contest) return res.status(404).send("Contest not found");
-    res.send(contest);
+const contest = await Contest.find();
+    // await contest.save();
+    res.status(201).send(contest);
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -55,65 +41,75 @@ exports.getContestById = async (req, res) => {
 // Update Contest
 exports.updateContest = async (req, res) => {
   try {
-    // Find the contest by ID
-    const contest = await Contest.findById(req.params.id);
+    const { id } = req.params;
+    const { name, description, cities, categories, startDate, endDate } = req.body;
 
-    if (!contest) return res.status(404).send("Contest not found");
-
-    // Handle image deletion if a new image is being uploaded
-    if (req.file) {
-      // Delete the old image if it exists
-      if (contest.images) {
-        const oldImagePath = path.resolve(contest.images);
-
-        fs.unlink(oldImagePath, (err) => {
-          if (err) {
-            console.error("Error deleting old image file:", err);
-          }
-        });
-      }
-
-      // Update the contest with the new image
-      req.body.images = req.file.path;
+    const contest = await Contest.findById(id);
+    if (!contest) {
+      return res.status(404).send("Contest not found");
     }
 
-    // Update the contest with the new data
-    const updatedContest = await Contest.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    contest.name = name || contest.name;
+    contest.description = description || contest.description;
+    contest.cities = cities || contest.cities;
+    contest.categories = categories || contest.categories;
+    contest.startDate = startDate || contest.startDate;
+    contest.endDate = endDate || contest.endDate;
 
-    if (!updatedContest) return res.status(404).send("Contest not found");
+    if (req.file) {
+      // Remove the old image
+      if (contest.image) {
+        fs.unlinkSync(contest.image);
+      }
+      contest.image = req.file.path;
+    }
 
-    // Send the updated contest
-    res.send(updatedContest);
+    await contest.save();
+    res.status(200).send(contest);
   } catch (error) {
-    console.error("Error updating contest:", error.message);
-    res.status(500).json({ message: "Error updating contest", error: error.message });
+    res.status(500).send(error.message);
   }
 };
 
 // Delete Contest
 exports.deleteContest = async (req, res) => {
   try {
-    // Find the contest by ID
-    const contest = await Contest.findById(req.params.id);
+    const { id } = req.params;
 
-    if (!contest) return res.status(404).send("Contest not found");
-
-    // Delete the image file if it exists
-    if (contest.images) {
-      fs.unlink(path.resolve(contest.images), (err) => {
-        if (err) {
-          console.error("Error deleting file:", err);
-        }
-      });
+    const contest = await Contest.findById(id);
+    if (!contest) {
+      return res.status(404).send("Contest not found");
     }
 
-    // Delete the contest from the database
-    await Contest.findByIdAndDelete(req.params.id);
+    // Remove the image
+    if (contest.image) {
+      fs.unlinkSync(contest.image);
+    }
 
-    // Send success response
-    res.send({ message: "Contest deleted successfully" });
+    await Contest.deleteOne({ _id: id });
+    res.status(200).send("Contest deleted successfully");
   } catch (error) {
-    console.error(error.message); // Log error for debugging
-    res.status(500).json({ message: "Error deleting contest", error: error.message });
+    res.status(500).send(error.message);
   }
 };
+
+// Add Winner
+exports.addWinner = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { winnerId } = req.body;
+
+    const contest = await Contest.findById(id);
+    if (!contest) {
+      return res.status(404).send("Contest not found");
+    }
+
+    contest.winnerId = winnerId;
+    await contest.save();
+
+    res.status(200).send(contest);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+

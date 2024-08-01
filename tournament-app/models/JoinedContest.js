@@ -1,10 +1,14 @@
 // models/JoinedContest.js
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const joinedContestSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  contest: { type: mongoose.Schema.Types.ObjectId, ref: "Contest", required: true },
-  submission: { type: String }, // URL to the uploaded video
+const JoinedContestSchema = new Schema({
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  contest: { type: Schema.Types.ObjectId, ref: 'Contest', required: true },
+  submission: { type: String, required: true },
+  isWinner: { type: Boolean, default: false },
+  isSelected: { type: Boolean, default: false },
+  createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("JoinedContest", joinedContestSchema);
+module.exports = mongoose.model('JoinedContest', JoinedContestSchema);

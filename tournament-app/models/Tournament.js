@@ -7,6 +7,7 @@ const tournamentSchema = new mongoose.Schema({
   matches: [{ type: mongoose.Schema.Types.ObjectId, ref: "Match" }],
   file: { type: String },
   startDate: { type: Date, required: true },
+  winnerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Reference to the winner
   endDate: { type: Date, required: true },
 });
 

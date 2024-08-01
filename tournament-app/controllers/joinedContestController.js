@@ -7,7 +7,9 @@ exports.joinContest = async (req, res) => {
   try {
     const userId = req.user._id;
     const contestId = req.params.contestId;
-    
+    const isSelected = req.body.isSelected;
+    const isWinner = req.body.isWinner;
+
     if (!req.file) return res.status(400).send("No video uploaded");
     const videoPath = req.file.path;
 
@@ -18,6 +20,8 @@ exports.joinContest = async (req, res) => {
       user: userId,
       contest: contestId,
       submission: videoPath,
+      isWinner: isWinner,
+      isSelected: isSelected,
     });
 
     await joinedContest.save();
@@ -26,6 +30,7 @@ exports.joinContest = async (req, res) => {
     res.status(500).send(error.message);
   }
 };
+
 // Delete Submission
 exports.deleteSubmission = async (req, res) => {
   try {
@@ -49,6 +54,15 @@ exports.deleteSubmission = async (req, res) => {
     await JoinedContest.deleteOne({ _id: entry._id });
 
     res.status(200).send("Submission deleted successfully");
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+exports.getSubmission = async (req, res) => {
+  try {
+    const contests = await JoinedContest.find().populate('user contest');
+    res.send(contests);
   } catch (error) {
     res.status(500).send(error.message);
   }

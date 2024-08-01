@@ -54,7 +54,7 @@ function Contests() {
               <tr>
                 <td> 
                   <div className='Tourament d-flex gap-3'>
-                        <img style={{objectFit:"cover"}} className='rounded-2 ' width={200} height={150} src={imageBaseUrl + item?.images } alt={item?.name} srcset={imageBaseUrl + item?.images } /> 
+                        <img style={{objectFit:"cover"}} className='rounded-2 ' width={200} height={150} src={imageBaseUrl + item?.image } alt={item?.name} srcset={imageBaseUrl + item?.image } /> 
                         <div className='d-flex flex-column'>
                         <span className='fs-3'>{item?.name}</span>
                         <span >City/Region: {item?.city?.name}</span>
