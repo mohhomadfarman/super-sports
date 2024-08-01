@@ -30,7 +30,7 @@ exports.createContest = async (req, res) => {
 // Create Contest
 exports.getContest = async (req, res) => {
   try {
-const contest = await Contest.find();
+const contest = await Contest.find().populate('cities categories');
     // await contest.save();
     res.status(201).send(contest);
   } catch (error) {

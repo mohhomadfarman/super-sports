@@ -6,6 +6,11 @@ export const GetContests = createAsyncThunk('GetContests', async () => {
   const response = await axiosInstanceToken.get('/contests');
   return response.data;
 });
+// Async thunk for API call
+export const GetJoinedContest = createAsyncThunk('GetJoinedContest', async (id) => {
+  const response = await axiosInstanceToken.get(`/contest/${id}`);
+  return response.data;
+});
 export const createContests = createAsyncThunk('createContests', async (payload) => {
   const response = await axiosInstanceTokenFormData.post('/contests',payload);
   return response.data;
@@ -21,6 +26,13 @@ export const UpdateContests = createAsyncThunk('UpdateContest', async (id) => {
   const response = await axiosInstanceTokenFormData.post(`/contests/${id}`);
   return response.data;
 });
+
+// Async thunk for API call
+export const joinContest = createAsyncThunk('joinContest', async (payload) => {
+  const response = await axiosInstanceTokenFormData.post(`/contest/join/${payload.id}`,payload.submission);
+  return response.data;
+});
+
 
 // Slice definition
 const contestSlice = createSlice({

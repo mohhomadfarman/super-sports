@@ -9,6 +9,7 @@ const ContestSchema = new Schema({
   cities: [{ type: Schema.Types.ObjectId, ref: 'City' }],
   categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
   rounds: [{ type: Schema.Types.ObjectId, ref: 'Points' }],
+  participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
   winnerId: { type: Schema.Types.ObjectId, ref: 'User' }, // Reference to the winner

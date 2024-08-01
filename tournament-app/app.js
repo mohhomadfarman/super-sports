@@ -54,7 +54,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/matches", matchRoutes);
 app.use("/api/tournaments", tournamentRoutes);
 app.use("/api/contests", contestRoutes);
-app.use("/api/joinedContests", joinedContestRoutes);
+app.use("/api/contest", joinedContestRoutes);
 
 mongoose.connect(mongoURI, {
   useNewUrlParser: true,

@@ -4,7 +4,6 @@ import { GetCities } from '../../../redux/citiesSlice';
 import { GetCategories } from '../../../redux/categoriesSlice';
 import { createContests } from '../../../redux/contestSlice';
 import { Container } from 'react-bootstrap';
-import { Getmatches } from '../../../redux/matchesSlice';
 
 function ContestForm({ handleClose }) {
   const dispatch = useDispatch();

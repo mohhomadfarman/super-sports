@@ -2,13 +2,14 @@
 const JoinedContest = require('../models/JoinedContest');
 const path = require('path');
 const fs = require('fs');
+const Contest = require('../models/Contest');
 
 exports.joinContest = async (req, res) => {
   try {
     const userId = req.user._id;
     const contestId = req.params.contestId;
-    const isSelected = req.body.isSelected;
-    const isWinner = req.body.isWinner;
+    const isSelected = req.body.isSelected ?req.body.isSelected : false ;
+    const isWinner = req.body.isWinner ? req.body.isWinner : false;
 
     if (!req.file) return res.status(400).send("No video uploaded");
     const videoPath = req.file.path;
@@ -38,6 +39,18 @@ exports.deleteSubmission = async (req, res) => {
     const contestId = req.params.contestId;
 
     // Find the submission entry
+
+       // Check if the user is already a participant
+       const isAlreadyJoined = Contest.participants.includes(userId);
+       if (isAlreadyJoined) {
+         return res.status(400).send("User already joined this Contest");
+       }
+   
+       // Add the user to the participants list
+       Contest.participants.push(userId);
+       await Contest.save();
+   
+
     const entry = await JoinedContest.findOne({ user: userId, contest: contestId });
     if (!entry) return res.status(404).send("Submission not found");
 
@@ -62,6 +75,14 @@ exports.deleteSubmission = async (req, res) => {
 exports.getSubmission = async (req, res) => {
   try {
     const contests = await JoinedContest.find().populate('user contest');
+    res.send(contests);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+exports.getUserSubmission = async (req, res) => {
+  try {
+    const contests = await JoinedContest.find( {user: req.params.id}).populate('user contest');
     res.send(contests);
   } catch (error) {
     res.status(500).send(error.message);
