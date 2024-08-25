@@ -5,15 +5,15 @@ const Schema = mongoose.Schema;
 const ContestSchema = new Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
+  category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
   image: { type: String, required: true },
+  rounds: [{ type: Schema.Types.ObjectId, ref: 'Round' }],
+  participants: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  final_winner: { type: Schema.Types.ObjectId, ref: 'User' },
   cities: [{ type: Schema.Types.ObjectId, ref: 'City' }],
-  categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
-  rounds: [{ type: Schema.Types.ObjectId, ref: 'Points' }],
-  participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   startDate: { type: Date, required: true },
   endDate: { type: Date, required: true },
-  winnerId: { type: Schema.Types.ObjectId, ref: 'User' }, // Reference to the winner
-  createdAt: { type: Date, default: Date.now },
+  created_at: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model('Contest', ContestSchema);

@@ -22,7 +22,6 @@ function Submission({ handleClose, id }) {
       });
       setError(''); 
     }
-
   const handleChange = (e) => {
     const { files } = e.target;
     if (files && files[0]) {

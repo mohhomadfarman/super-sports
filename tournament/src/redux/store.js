@@ -5,6 +5,7 @@ import matchesSliceReducer from './matchesSlice';
 import contestSliceReducer from './contestSlice';
 import citiesSliceReducer from './citiesSlice';
 import categoriesSliceReducer from './categoriesSlice'
+import roundsSliceReducer from './roundsSlice'
 
 
 const store = configureStore({
@@ -14,7 +15,8 @@ const store = configureStore({
     GetMatches:matchesSliceReducer,
     GetContest: contestSliceReducer,
     GetCities: citiesSliceReducer,
-    GetCategories: categoriesSliceReducer
+    GetCategories: categoriesSliceReducer,
+    getContestRounds: roundsSliceReducer,
   },
 });
 

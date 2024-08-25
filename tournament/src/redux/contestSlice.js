@@ -6,6 +6,14 @@ export const GetContests = createAsyncThunk('GetContests', async () => {
   const response = await axiosInstanceToken.get('/contests');
   return response.data;
 });
+
+// Async thunk for API call
+export const GetSingleContests = createAsyncThunk('GetSingleContests', async (id) => {
+  const response = await axiosInstanceToken.get(`/contests/single/${id}`);
+  return response.data;
+});
+
+
 // Async thunk for API call
 export const GetJoinedContest = createAsyncThunk('GetJoinedContest', async (id) => {
   const response = await axiosInstanceToken.get(`/contest/${id}`);

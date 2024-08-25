@@ -161,3 +161,47 @@ input{
   background-color: #ffffffcf;
   z-index: 999;
 }
+.accordion-item .accordion-header .accordion-button
+{
+  border-radius: 0 !important;
+    background: transparent;
+    padding: 20px 16px !important;
+}
+button.accordion-button:active {
+  transform: unset;
+}
+.accordion-button:focus {
+  z-index: 3;
+  outline: 0;
+  box-shadow: unset;
+}
+.accordion-button:not(.collapsed)
+{
+  border-bottom: 1px solid #c2c2c2;
+}
+.form-label{
+  width: 100%;
+}
+.image-banner
+{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  z-index: -1;
+  // filter: brightness(0.2);
+}
+.container-bg
+{
+  background-color: #0000008e;
+  width: 100%;
+  height: 300px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.bg-primary-2
+{
+  background-color: #3c70ea2b;
+}

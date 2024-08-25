@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Table } from "react-bootstrap";
+import { Col, Container, Row, Table } from "react-bootstrap";
 import { CiSquarePlus } from "react-icons/ci";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteContest, GetContests } from "../../redux/contestSlice";
@@ -8,6 +8,7 @@ import ContestForm from "./Forms/ContestForm";
 import { getAllTimes } from "../../utils_sec/auth";
 import { imageBaseUrl } from "../../assets/config";
 import Loader from "../../components/Loader";
+import ContestsCard from "../../components/ContestsCard";
 
 function Contests() {
   const [show, setShow] = useState(false);
@@ -41,6 +42,22 @@ function Contests() {
             <CiSquarePlus size={35} /> Create Contests
           </button>
         </div>
+        <Row className="mt-4">
+        {data?.slice()?.reverse()?.map((item, key) => (
+          <Col key={key} md={3} className="mb-3">
+            {console.log(item)}
+          <ContestsCard
+                id={item?._id}
+                startDate={getAllTimes(item?.startDate)?.formattedDate}
+                image={imageBaseUrl + item?.image }
+                name={item?.name}
+                citie={item?.cities}
+                joinBtn={""}
+                joined={""}
+            />
+          </Col>
+        ))}
+        </Row>
 
         <Table responsive bordered className="mt-3 rounded">
           <thead>

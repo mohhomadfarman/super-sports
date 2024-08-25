@@ -13,7 +13,7 @@ const router = express.Router();
  *     summary: Create a new contest
  *     tags: [Contests]
  */
-router.post('/', auth('admin'), upload.single('image'), contestController.createContest);
+router.post('/',auth('admin'), upload.single('image'), contestController.createContest);
 
 /**
  * @swagger
@@ -22,7 +22,18 @@ router.post('/', auth('admin'), upload.single('image'), contestController.create
  *     summary: get contest
  *     tags: [Contests]
  */
-router.get('/', auth(), contestController.getContest);
+router.get('/',auth(), contestController.getContests);
+
+/**
+ * @swagger
+ * /single/:id:
+ *   get:
+ *     summary: get Single contest
+ *     tags: [Contests]
+ */
+router.get('/single/:id',auth(), contestController.getContestsSignle);
+
+
 /**
  * @swagger
  * /contests/{id}:
@@ -39,7 +50,7 @@ router.put('/:id', auth('admin'), upload.single('image'), contestController.upda
  *     summary: Delete a contest
  *     tags: [Contests]
  */
-router.delete('/:id', auth('admin'), contestController.deleteContest);
+router.delete('/:id',auth(), contestController.deleteContest);
 
 /**
  * @swagger
@@ -48,7 +59,7 @@ router.delete('/:id', auth('admin'), contestController.deleteContest);
  *     summary: Add a winner to a contest
  *     tags: [Contests]
  */
-router.put('/:id/winner', auth('admin'), contestController.addWinner);
+router.post('/:id/winner',auth(), contestController.addWinner);
 
 
 module.exports = router;

@@ -1,8 +1,9 @@
 import React from "react";
 import './cards.scss';
 import { FaLocationDot } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
-function TournamentCard({ image, name, citie, startDate, joinBtn, joined }) {
+function TournamentCard({ image, name, citie, startDate, joinBtn, joined,id }) {
   return (
     <div className="games">
       <div className="banner_wrapper">
@@ -24,7 +25,12 @@ function TournamentCard({ image, name, citie, startDate, joinBtn, joined }) {
                 </p>
               </div>
             </div>
-            <button
+            <Link to={`/contest/${id}`}><button
+              className={`border-0`}
+            >
+            Open
+            </button></Link>
+            {/* <button
               onClick={joinBtn}
               disabled={joined}
               className={`border-0 ${joined ? "btn btn-secondary" : ""}`}
@@ -32,7 +38,7 @@ function TournamentCard({ image, name, citie, startDate, joinBtn, joined }) {
             >
               {joined ? "JOINED" : "JOIN"}
               {console.log(joined)}
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
