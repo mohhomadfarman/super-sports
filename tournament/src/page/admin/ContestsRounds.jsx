@@ -58,15 +58,6 @@ const ContestsRounds = () => {
           </Container>
     <Container >
       <Row>
-  
-        {/* <Col md={12} className="mt-4">
-          <div className="actions">
-            <h1>Rounds of {contest?.name}</h1>
-            <button onClick={handleShow} className="pr-btn">
-              <CiSquarePlus size={35} /> Create Rounds
-            </button>
-          </div>
-        </Col> */}
         <Col md={8} className="mt-4">
           <Accordion defaultActiveKey="0">
             {data?.map((item, key) => (

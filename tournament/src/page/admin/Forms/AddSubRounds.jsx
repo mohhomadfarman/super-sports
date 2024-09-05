@@ -5,10 +5,18 @@ import RoundsFrom from "./RoundsFrom";
 import { getUserId } from "../../../utils_sec/auth";
 import { FaPlus } from "react-icons/fa6";
 import { LiaEyeSolid } from "react-icons/lia";
+import AddParticipantSubRounds from "./AddParticipantSubRounds";
 const AddSubRounds = ({ subRound, id, NoFoundMsg }) => {
   const [show, setShow] = useState(false);
+  const [showTwo, setShowTwo] = useState(false);
   const dispatch = useDispatch();
 
+
+  const handleShowAdd = useCallback(() => setShowTwo(true), []);
+  const handleCloseAdd = useCallback(() => {
+    setShowTwo(false);
+    // dispatch(getContestRounds(id)); // Uncomment if needed to refetch data
+  }, [dispatch, id]);
   const handleShow = useCallback(() => setShow(true), []);
   const handleClose = useCallback(() => {
     setShow(false);
@@ -33,7 +41,7 @@ const AddSubRounds = ({ subRound, id, NoFoundMsg }) => {
                 <span>{item?.name}</span>
               </div>
               <div className="d-flex gap-3">
-                <button className="border-0 rounded align-items-center d-flex gap-2"> <FaPlus size={18} /> Add Participants</button>
+                <button onClick={handleShowAdd} className="border-0 rounded align-items-center d-flex gap-2"> <FaPlus size={18} /> Add Participants</button>
                 <button className="border-0 rounded align-items-center d-flex gap-2"> <LiaEyeSolid size={18}/> Participants Lists</button>
               </div>
             </div>
@@ -56,6 +64,13 @@ const AddSubRounds = ({ subRound, id, NoFoundMsg }) => {
           show={show}
           component={
             <RoundsFrom id={id} type={"subRound"} handleClose={handleClose} />
+          }
+        />
+        <ModalForm
+          title={"Add particinats"}
+          handleClose={handleCloseAdd}
+          show={showTwo}
+          component={<AddParticipantSubRounds/>
           }
         />
       </div>

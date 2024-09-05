@@ -72,3 +72,41 @@ exports.deleteRound = async (req, res) => {
     res.status(500).send(error.message);
   }
 };
+
+//Add participents in subrounds
+exports.addParticipantsToSubRound = async (req, res) => {
+  try {
+    const { contestId, subRoundId, participantIds } = req.body;
+
+    // Find the contest by ID
+    const contest = await Contest.findById(contestId);
+    if (!contest) {
+      return res.status(404).send("Contest not found");
+    }
+
+    // Validate the participant IDs
+    const validParticipants = contest.participants.filter(participantId => 
+      participantIds.includes(participantId.toString())
+    );
+
+    if (validParticipants.length === 0) {
+      return res.status(400).send("No valid participants found in the contest");
+    }
+
+    // Find the subround by ID
+    const subRound = await SubRound.findById(subRoundId);
+    if (!subRound) {
+      return res.status(404).send("Sub-round not found");
+    }
+
+    // Add specified participants to the subround
+    subRound.participants.push(...validParticipants);
+
+    // Save the subround with updated participants
+    await subRound.save();
+
+    res.send("Participants added to sub-round successfully");
+  } catch (err) {
+    res.status(400).send(err.message);
+  }
+};
