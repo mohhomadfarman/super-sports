@@ -41,8 +41,9 @@ const AddSubRounds = ({ subRound, id, NoFoundMsg }) => {
                 <span>{item?.name}</span>
               </div>
               <div className="d-flex gap-3">
-                <button onClick={handleShowAdd} className="border-0 rounded align-items-center d-flex gap-2"> <FaPlus size={18} /> Add Participants</button>
-                <button className="border-0 rounded align-items-center d-flex gap-2"> <LiaEyeSolid size={18}/> Participants Lists</button>
+                {/* <button onClick={handleShowAdd} className="border-0 rounded align-items-center d-flex gap-2"> <FaPlus size={18} /> Add Participants</button>
+                <button className="border-0 rounded align-items-center d-flex gap-2"> <LiaEyeSolid size={18}/> Participants Lists</button> */}
+                <button onClick={handleShowAdd} className="border-0 rounded align-items-center d-flex gap-2"> <LiaEyeSolid size={18}/> Winner Lists</button>
               </div>
             </div>
           </div>

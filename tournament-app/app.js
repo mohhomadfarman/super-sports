@@ -12,6 +12,7 @@ const tournamentRoutes = require("./routes/tournamentRoutes");
 const contestRoutes = require("./routes/contestRoutes");
 const joinedContestRoutes = require("./routes/joinedContestRoutes");
 const roundRoutes = require("./routes/roundRoutes");
+const leaderboardRoutes = require("./routes/leaderboardRoutes");
 const { mongoURI, port } = require("./config");
 require("dotenv").config();
 const app = express();
@@ -57,6 +58,7 @@ app.use("/api/tournaments", tournamentRoutes);
 app.use("/api/contests", contestRoutes);
 app.use("/api/contest", joinedContestRoutes);
 app.use("/api/rounds", roundRoutes);
+app.use("/api/leaderboard", leaderboardRoutes);
 
 mongoose.connect(mongoURI, {
   useNewUrlParser: true,
