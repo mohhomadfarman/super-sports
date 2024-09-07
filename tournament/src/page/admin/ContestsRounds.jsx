@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Accordion, Col, Container, Row, Modal, Form } from "react-bootstrap";
+import { Accordion, Col, Container, Row} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { CiSquarePlus } from "react-icons/ci";
@@ -9,6 +9,7 @@ import { GetSingleContests } from "../../redux/contestSlice";
 import AddSubRounds from "./Forms/AddSubRounds";
 import ModalForm from "./Forms/ModalForm";
 import RoundsFrom from "./Forms/RoundsFrom";
+import LeaderboardForm from "./Forms/LeaderboardForm";
 
 const ContestsRounds = () => {
   const [show, setShow] = useState(false);
@@ -129,50 +130,18 @@ const ContestsRounds = () => {
           </Col>
         </Row>
 
-        {/* Modal for Video, Rating, and Checkboxes */}
-        <Modal show={videoModalShow} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
-            <Modal.Title>
-              Participant Video - {selectedParticipant?.firstName}{" "}
-              {selectedParticipant?.lastName}
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {/* Video Section */}
-            <div className="mb-3">
-              <video width="100%" controls>
-                <source src="http://localhost:8080/uploads/1725611738133-1 Minute Sample Video (1).mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-
-            {/* Rating Input */}
-            <Form.Group className="mb-3" controlId="ratingInput">
-              <Form.Label>Score</Form.Label>
-              <Form.Control type="number" min="1" max="10" placeholder="Enter Score" />
-            </Form.Group>
-
-            {/* Winner and Not Winner Checkboxes */}
-            <Form.Group controlId="winnerCheckbox" className="mb-3">
-              <Form.Check type="checkbox" label="Winner" />
-            </Form.Group>
-            <Form.Group controlId="notWinnerCheckbox">
-              <Form.Check type="checkbox" label="Not Winner" />
-            </Form.Group>
-          </Modal.Body>
-          <Modal.Footer>
-            <button className="btn btn-secondary" onClick={handleCloseModal}>
-              Close
-            </button>
-            <button className="btn btn-primary">Submit</button>
-          </Modal.Footer>
-        </Modal>
-
+      
         <ModalForm
           title={"Add Rounds"}
           handleClose={handleClose}
           show={show}
           component={<RoundsFrom handleClose={handleClose} />}
+        />
+        <ModalForm
+          title={`Participant Video - ${selectedParticipant?.firstName?.charAt(0).toUpperCase() + selectedParticipant?.firstName?.slice(1)} ${selectedParticipant?.lastName?.charAt(0).toUpperCase() + selectedParticipant?.lastName?.slice(1)}`}
+          handleClose={handleCloseModal}
+          show={videoModalShow}
+          component={<LeaderboardForm data={selectedParticipant} contest={contest} />}
         />
       </Container>
     </>

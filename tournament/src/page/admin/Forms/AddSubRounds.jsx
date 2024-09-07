@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import ModalForm from "./ModalForm";
 import RoundsFrom from "./RoundsFrom";
 import { getUserId } from "../../../utils_sec/auth";
-import { FaPlus } from "react-icons/fa6";
 import { LiaEyeSolid } from "react-icons/lia";
 import AddParticipantSubRounds from "./AddParticipantSubRounds";
 const AddSubRounds = ({ subRound, id, NoFoundMsg }) => {

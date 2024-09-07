@@ -11,6 +11,7 @@ exports.createLeaderBoard = async (req, res) => {
             subroundId,
             isWinner
         });
+        console.log(leaderboard)
         await leaderboard.save();
         res.status(201).send({status:"success.message"});
     } catch (error) {
