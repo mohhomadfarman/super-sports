@@ -10,7 +10,8 @@ router.post('/:userId',auth(), leaderboardController.createLeaderBoard);
 
 router.get('/leaderboard',auth(),leaderboardController.getleaderboard);
 
-router.get('/single/leaderboard/:userId',auth(), leaderboardController.getleaderboardSingle);
+// router.get('/single/:userId', leaderboardController.getleaderboardSingle);
+router.get('/single/:userId', leaderboardController.getLeaderboardSingle);
 
 router.put('/:usedId',auth(),leaderboardController.updateLeaderboard);
 

@@ -28,13 +28,21 @@ exports.getleaderboard = async (req, res) => {
     }
 };
 
-exports.getleaderboardSingle = async (req, res) => {
+exports.getLeaderboardSingle = async (req, res) => {
+    console.log()
     try {
-        const leaderboard = await LeaderBoard.findById(req.param.id).populate('userId','constestId','subroundId');
-        res.status(200).send(leaderboard);
-        } catch (error) {
-            res.status(500).send(error.message);
-        }
+    const userId = req?.params?.userId;
+    const leaderboard = await LeaderBoard.findOne({userId:userId}).populate('contestId','subroundId');
+    if (!leaderboard) {
+        return res.status(404).send('Leaderboard entry not found');
+    }
+
+    res.status(200).json(leaderboard);
+}
+catch(err){
+    console.error('Error fetching leaderboard:', err); // Debugging line
+    res.status(500).send(err.message);
+}
 };
 
 exports.updateLeaderboard = async (req, res) => {

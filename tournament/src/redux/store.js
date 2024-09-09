@@ -7,6 +7,7 @@ import citiesSliceReducer from './citiesSlice';
 import categoriesSliceReducer from './categoriesSlice'
 import roundsSliceReducer from './roundsSlice'
 import createLeaderBoardSliceReducer from './leaderboardSlice'
+import getvideosubmitReducer from './getvideosubmitSlice';
 
 
 const store = configureStore({
@@ -18,7 +19,8 @@ const store = configureStore({
     GetCities: citiesSliceReducer,
     GetCategories: categoriesSliceReducer,
     getContestRounds: roundsSliceReducer,
-    leaderBorda: createLeaderBoardSliceReducer
+    leaderBorda: createLeaderBoardSliceReducer,
+    videosubmit: getvideosubmitReducer,
   },
 });
 

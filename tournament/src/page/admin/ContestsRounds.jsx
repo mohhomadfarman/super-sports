@@ -129,8 +129,6 @@ const ContestsRounds = () => {
             </div>
           </Col>
         </Row>
-
-      
         <ModalForm
           title={"Add Rounds"}
           handleClose={handleClose}
