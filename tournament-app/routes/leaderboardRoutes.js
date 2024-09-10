@@ -7,14 +7,8 @@ const router = express.Router();
 
 router.post('/:userId',auth(), leaderboardController.createLeaderBoard);
 
+router.get('/single/leaderboard/:userId', leaderboardController.getLeaderboardSingle);
 
-router.get('/leaderboard',auth(),leaderboardController.getleaderboard);
-
-// router.get('/single/:userId', leaderboardController.getleaderboardSingle);
-router.get('/single/:userId', leaderboardController.getLeaderboardSingle);
-
-router.put('/:usedId',auth(),leaderboardController.updateLeaderboard);
-
-router.delete('/:userId',auth(),leaderboardController.deleteLeaderboard);
+router.put('/update/:userId', leaderboardController.updateLeaderboardEntry);
 
 module.exports = router;
