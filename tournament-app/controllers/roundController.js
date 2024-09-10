@@ -110,3 +110,27 @@ exports.addParticipantsToSubRound = async (req, res) => {
     res.status(400).send(err.message);
   }
 };
+
+exports.getSubRoundById = async (req, res) => {
+  try {
+    const round = await subRounds
+      .findById(req.params.id)
+      .populate({
+        path: 'winners',
+        select: '-password' // Exclude the password field
+      })
+      .populate('city', 'name')
+      .populate('participants', '_id name');
+
+    if (!round) {
+      return res.status(404).json({ status: 'error', message: 'SubRound not found' });
+    }
+
+    // Send success response with the found subRound data
+    res.status(200).json({ status: 'success', data: round });
+  } catch (error) {
+    // Handle errors
+    res.status(500).json({ status: 'error', message: error.message });
+  }
+};
+
