@@ -1,4 +1,5 @@
 const LeaderBoard = require('../models/LeaderBoard');
+const SubRound = require('../models/subRounds');
 
 exports.createLeaderBoard = async (req, res) => {
     try {
@@ -7,7 +8,7 @@ exports.createLeaderBoard = async (req, res) => {
         const leaderboard = new LeaderBoard({
             userId,
             score,
-            contestId,
+            contestId, 
             subroundId,
             isWinner
         });
@@ -21,67 +22,54 @@ exports.createLeaderBoard = async (req, res) => {
 
 exports.getLeaderboardSingle = async (req, res) => {
     try {
-        // Get the userId from the request parameters
         const { userId } = req.params;
 
-        // Find the leaderboard entry by userId
         const leaderboard = await LeaderBoard.findOne({ userId });
-
-        // Check if the entry was found
         if (!leaderboard) {
             return res.status(404).send({ status: "error", message: "Leaderboard entry not found" });
         }
 
-        // Send the leaderboard entry as the response
         res.status(200).send({ status: "success", data: leaderboard });
     } catch (error) {
-        // Handle any errors that occurred
         res.status(500).send({ status: "error", message: error.message });
     }
 };
-
 // exports.updateLeaderboardEntry = async (req, res) => {
 //     try {
-//         // Get the userId from the request parameters
 //         const { userId } = req.params;
-
 //         const { score, isWinner, contestId, subroundId } = req.body;
-  
-//       const leaderboard = await LeaderBoard.findOne({userId: userId});  // Ensure you're using the correct userId to find
-//       if (!leaderboard) {
-//         return res.status(404).json({ message: "Leaderboard not found" });
-//       }
-//   console.log(leaderboard)
-//       leaderboard.score = score || leaderboard.score;
-//       leaderboard.isWinner = isWinner || leaderboard.isWinner;
-//       leaderboard.contestId = contestId || leaderboard.contestId;
-//       leaderboard.subroundId = subroundId || leaderboard.subroundId;
-  
-//       const response = await leaderboard.save();
-//       console.log(response)
-//       return res.status(200).json(leaderboard);
+
+//         const leaderboard = await LeaderBoard.findOne({ userId });
+
+//         if (!leaderboard) {
+//             return res.status(404).send({ status: "error", message: "Leaderboard entry not found" });
+//         }
+//         leaderboard.score = score !== undefined ? score : leaderboard.score;
+//         leaderboard.isWinner = isWinner !== undefined ? isWinner : leaderboard.isWinner;
+//         leaderboard.contestId = contestId !== undefined ? contestId : leaderboard.contestId;
+//         leaderboard.subroundId = subroundId !== undefined ? subroundId : leaderboard.subroundId;
+
+//         await leaderboard.save();
+
+//         res.status(200).send({ status: "success", data: leaderboard });
 //     } catch (error) {
-//       return res.status(500).json({ message: error.message });
+//         res.status(500).send({ status: "error", message: error.message });
 //     }
 // };
 
 exports.updateLeaderboardEntry = async (req, res) => {
     try {
-        // Get the userId from the request parameters
         const { userId } = req.params;
-
-        // Get the updated data from the request body
         const { score, isWinner, contestId, subroundId } = req.body;
 
-        // Find the leaderboard entry by userId
+        // Find the leaderboard entry
         const leaderboard = await LeaderBoard.findOne({ userId });
 
-        // Check if the entry was found
         if (!leaderboard) {
             return res.status(404).send({ status: "error", message: "Leaderboard entry not found" });
         }
 
-        // Update the leaderboard entry with the provided data
+        // Update leaderboard entry
         leaderboard.score = score !== undefined ? score : leaderboard.score;
         leaderboard.isWinner = isWinner !== undefined ? isWinner : leaderboard.isWinner;
         leaderboard.contestId = contestId !== undefined ? contestId : leaderboard.contestId;
@@ -90,10 +78,24 @@ exports.updateLeaderboardEntry = async (req, res) => {
         // Save the updated leaderboard entry
         await leaderboard.save();
 
-        // Send the updated leaderboard entry as the response
+        // Check if the user is a winner
+        if (isWinner) {
+            // Update the subRounds document
+            const subRound = await SubRound.findById(subroundId);
+
+            if (!subRound) {
+                return res.status(404).send({ status: "error", message: "SubRound not found" });
+            }
+
+            // Add the userId to the winners array if not already present
+            if (!subRound.winners.includes(userId)) {
+                subRound.winners.push(userId);
+                await subRound.save();
+            }
+        }
+
         res.status(200).send({ status: "success", data: leaderboard });
     } catch (error) {
-        // Handle any errors that occurred
         res.status(500).send({ status: "error", message: error.message });
     }
 };
