@@ -76,6 +76,7 @@ function LeaderboardForm({ handleClose, data, contest }) {
     }
   
     const submitData = {
+      userId: formData.userId || data?._id,
       score: formData.score,
       isWinner: formData.isWinner,
       contestId: formData.contestId,
@@ -84,7 +85,7 @@ function LeaderboardForm({ handleClose, data, contest }) {
   
     const action = isUpdate 
       ? updateLeaderboardByUserId({ id: data?._id, item: submitData })
-      : createLeaderBoard({ id: data?._id, item: [...submitData] });
+      : createLeaderBoard({ id: data?._id, item: submitData });
   
     dispatch(action)
       .then((res) => {

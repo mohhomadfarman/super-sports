@@ -1,26 +1,28 @@
 import React, { useState, useCallback } from "react";
-import { useDispatch } from "react-redux";
 import ModalForm from "./ModalForm";
 import RoundsFrom from "./RoundsFrom";
 import { getUserId } from "../../../utils_sec/auth";
 import { LiaEyeSolid } from "react-icons/lia";
 import AddParticipantSubRounds from "./AddParticipantSubRounds";
+
 const AddSubRounds = ({ subRound, id, NoFoundMsg }) => {
   const [show, setShow] = useState(false);
   const [showTwo, setShowTwo] = useState(false);
-  const dispatch = useDispatch();
+  const [winnersData, setWinnersData] = useState(false);
 
+  const handleShowAdd = (item) => {
+    setShowTwo(true);
+    setWinnersData(item);
+  };
 
-  const handleShowAdd = useCallback(() => setShowTwo(true), []);
   const handleCloseAdd = useCallback(() => {
     setShowTwo(false);
-    // dispatch(getContestRounds(id)); // Uncomment if needed to refetch data
-  }, [dispatch, id]);
+  }, []);
+
   const handleShow = useCallback(() => setShow(true), []);
   const handleClose = useCallback(() => {
     setShow(false);
-    // dispatch(getContestRounds(id)); // Uncomment if needed to refetch data
-  }, [dispatch, id]);
+  }, []);
 
   return (
     <div className="container">
@@ -40,9 +42,9 @@ const AddSubRounds = ({ subRound, id, NoFoundMsg }) => {
                 <span>{item?.name}</span>
               </div>
               <div className="d-flex gap-3">
-                {/* <button onClick={handleShowAdd} className="border-0 rounded align-items-center d-flex gap-2"> <FaPlus size={18} /> Add Participants</button>
-                <button className="border-0 rounded align-items-center d-flex gap-2"> <LiaEyeSolid size={18}/> Participants Lists</button> */}
-                <button onClick={handleShowAdd} className="border-0 rounded align-items-center d-flex gap-2"> <LiaEyeSolid size={18}/> Winner Lists</button>
+                <button onClick={() => handleShowAdd(item?._id)} className="border-0 rounded align-items-center d-flex gap-2">
+                  <LiaEyeSolid size={18}/> Winner Lists
+                </button>
               </div>
             </div>
           </div>
@@ -54,9 +56,7 @@ const AddSubRounds = ({ subRound, id, NoFoundMsg }) => {
             <button onClick={handleShow} className="btn btn-success">
               Add Sub-Rounds
             </button>
-          ) : (
-            ""
-          )}
+          ) : null}
         </div>
         <ModalForm
           title={"Add Rounds"}
@@ -67,11 +67,10 @@ const AddSubRounds = ({ subRound, id, NoFoundMsg }) => {
           }
         />
         <ModalForm
-          title={"Add particinats"}
+          title={`Winners of `}
           handleClose={handleCloseAdd}
           show={showTwo}
-          component={<AddParticipantSubRounds/>
-          }
+          component={<AddParticipantSubRounds winners={winnersData} />}
         />
       </div>
     </div>

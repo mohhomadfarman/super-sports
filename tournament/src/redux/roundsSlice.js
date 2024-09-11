@@ -1,9 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { axiosInstanceToken, axiosInstanceTokenFormData } from './instence';
+import { axiosInstanceToken } from './instence';
 
 // Async thunk for API call
 export const getContestRounds = createAsyncThunk('getContestRounds', async (id) => {
   const response = await axiosInstanceToken.get(`/rounds/${id}`);
+  return response.data;
+});
+
+// Async thunk for API call
+export const GetSubRounds = createAsyncThunk('GetSubRounds', async (payload) => {
+  const response = await axiosInstanceToken.get(`/rounds/subrounds/${payload}`);
   return response.data;
 });
 
@@ -14,6 +20,9 @@ export const createRounds = createAsyncThunk('createRounds', async (payload) => 
   const response = await axiosInstanceToken.post(`/rounds`,payload);
   return response.data;
 });
+
+
+
 
 // Slice definition
 const roundsSlice = createSlice({

@@ -4,6 +4,8 @@
 const Round = require('../models/Round');
 const Contest = require('../models/Contest');
 const subRounds = require('../models/subRounds');
+const LeaderBoard = require('../models/LeaderBoard'); // Adjust the path as needed
+
 
 exports.createRound = async (req, res) => {
   try {
@@ -111,13 +113,33 @@ exports.addParticipantsToSubRound = async (req, res) => {
   }
 };
 
+// exports.getSubRoundById = async (req, res) => {
+//   try {
+//     const round = await subRounds
+//       .findById(req.params.id)
+//       .populate({
+//         path: 'winners',
+//         select: '-password'
+//       })
+//       .populate('city', 'name')
+//       .populate('participants', '_id name');
+
+//     if (!round) {
+//       return res.status(404).json({ status: 'error', message: 'SubRound not found' });
+//     }
+//     res.status(200).json({ status: 'success', data: round });
+//   } catch (error) {
+//     res.status(500).json({ status: 'error', message: error.message });
+//   }
+// };
+
 exports.getSubRoundById = async (req, res) => {
   try {
     const round = await subRounds
       .findById(req.params.id)
       .populate({
         path: 'winners',
-        select: '-password' // Exclude the password field
+        select: '-password'
       })
       .populate('city', 'name')
       .populate('participants', '_id name');
@@ -126,11 +148,27 @@ exports.getSubRoundById = async (req, res) => {
       return res.status(404).json({ status: 'error', message: 'SubRound not found' });
     }
 
-    // Send success response with the found subRound data
-    res.status(200).json({ status: 'success', data: round });
+    // Fetch scores for each winner based on the subroundId and userId
+    const winnersWithScores = await Promise.all(
+      round.winners.map(async (winner) => {
+        const leaderboardEntry = await LeaderBoard.findOne({
+          userId: winner._id,
+          subroundId: req.params.id
+        }).select('score');
+
+        return {
+          ...winner.toObject(),
+          score: leaderboardEntry ? leaderboardEntry.score : null
+        };
+      })
+    );
+
+    res.status(200).json({ status: 'success', data: { ...round.toObject(), winners: winnersWithScores } });
   } catch (error) {
-    // Handle errors
     res.status(500).json({ status: 'error', message: error.message });
   }
 };
+
+
+
 
