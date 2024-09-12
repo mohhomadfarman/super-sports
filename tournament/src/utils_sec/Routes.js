@@ -14,6 +14,8 @@ import Tournaments from "../page/user/Tournaments";
 import ContestsUser from "../page/user/Contests";
 import ContestsRounds from "../page/admin/ContestsRounds";
 import ContestsOpen from "../page/user/ContestsOpen";
+import Profile from "../page/user/Profile";
+import ChangePasswordForm from "../components/ChangePasswordForm";
 
 
 const role = getUserId()?.userRole;
@@ -29,6 +31,8 @@ const protects = {
         { path: "/tournaments", element: <Tournaments/> },
         { path: "/contests", element: <ContestsUser/> },
         { path: "/contest/:id", element: <ContestsOpen/> },
+        { path: "/profile", element: <Profile/> },
+        { path: "/change-password", element: <ChangePasswordForm/> },
         { path: "*", element: <div>No page found</div> },
       ],
     },
