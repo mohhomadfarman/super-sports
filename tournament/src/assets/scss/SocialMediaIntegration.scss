@@ -1,0 +1,62 @@
+.social-media-integration {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .video-list {
+    h3 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+
+      li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+        .share-buttons {
+          display: flex;
+          gap: 10px;
+
+          button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+
+            &:hover {
+              opacity: 0.8;
+            }
+
+            &:nth-child(1) {
+              background-color: #3b5998; // Facebook blue
+            }
+
+            &:nth-child(2) {
+              background-color: #1da1f2; // Twitter blue
+            }
+
+            &:nth-child(3) {
+              background-color: #e1306c; // Instagram pink
+            }
+          }
+        }
+      }
+    }
+  }
+}

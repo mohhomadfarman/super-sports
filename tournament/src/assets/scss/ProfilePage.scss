@@ -1,0 +1,27 @@
+// Ensure .sidebar has high specificity
+.profile-page {
+    .col-3.sidebar {
+      background-color: #0a10c5; // Light gray background for sidebar
+      height: 100vh; // Full vertical height
+      padding: 20px;
+      
+      .list-group-item {
+        margin-bottom: 10px; // Spacing between items
+        font-size: 16px;
+        
+        a {
+          color: #333; // Dark text color for links
+          text-decoration: none;
+          &:hover {
+            color: #007bff; // Blue on hover
+          }
+        }
+      }
+    }
+  
+    .col-9.content {
+      padding: 20px;
+      background-color: #fff; // White background for content
+    }
+  }
+  

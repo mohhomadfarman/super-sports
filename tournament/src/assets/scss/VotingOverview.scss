@@ -1,0 +1,67 @@
+.voting-overview {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  
+    h2, h3 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+  
+    .video-list {
+      margin-bottom: 30px;
+      ul {
+        list-style-type: none;
+        padding: 0;
+  
+        li {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  
+    .leaderboard {
+      margin-bottom: 30px;
+      ol {
+        padding-left: 20px;
+      }
+    }
+  
+    .voting-guidelines, .time-remaining {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+  
+    .cta {
+      text-align: center;
+  
+      .vote-button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+  
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
+    }
+  
+    .share-button {
+      background-color: #28a745;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+  
+      &:hover {
+        background-color: #218838;
+      }
+    }
+  }
+  
