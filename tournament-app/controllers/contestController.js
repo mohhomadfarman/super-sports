@@ -10,7 +10,7 @@
 //     const { name, description, cities, categories, startDate, endDate } = req.body;
 //     const imagePath = req.file ? req.file.path : null;
 
-//     const contest = new Contest({
+//     const contest = new Contest({ 
 //       name,
 //       description,
 //       image: imagePath,

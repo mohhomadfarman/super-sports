@@ -1,7 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUserProfile, updateUserProfile } from '../redux/userSlice';
 import '../assets/scss/ProfileDetailsForm.scss'; // Ensure the path is correct
 
-const ProfileDetailsForm = () => {
+const ProfileDetailsForm = ({ id }) => {
+  const dispatch = useDispatch();
+  const userProfile = useSelector((state) => state.user.profile);
+  const loading = useSelector((state) => state.user.loading);
+  const error = useSelector((state) => state.user.error);
+
   // State to manage form inputs
   const [formData, setFormData] = useState({
     firstName: "",
@@ -15,7 +22,29 @@ const ProfileDetailsForm = () => {
   // State to hold the image URL
   const [imageURL, setImageURL] = useState(null);
 
-  // Handle input change
+  useEffect(() => {
+    if (id) {
+      dispatch(getUserProfile(id));
+    }
+  }, [id, dispatch]);
+
+  useEffect(() => {
+    if (userProfile) {
+      setFormData({
+        firstName: userProfile.firstName || "",
+        lastName: userProfile.lastName || "",
+        email: userProfile.email || "",
+        phone: userProfile.phone || "",
+        address: userProfile.address || "",
+        profilePhoto: null, // Not setting this here because it's a file input
+      });
+      // Assuming profilePhoto URL needs to be fetched
+      if (userProfile.profilePhoto) {
+        setImageURL(userProfile.profilePhoto);
+      }
+    }
+  }, [userProfile]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -24,7 +53,6 @@ const ProfileDetailsForm = () => {
     });
   };
 
-  // Handle file change for profile photo
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFormData({
@@ -39,15 +67,20 @@ const ProfileDetailsForm = () => {
     }
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Implement form submission logic here
-    console.log(formData);
+    // Prepare form data for submission
+    const updatedData = new FormData();
+    for (const key in formData) {
+      updatedData.append(key, formData[key]);
+    }
+    dispatch(updateUserProfile({ id, formData: updatedData }));
   };
 
   return (
     <div className="profile-details-form">
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error.message}</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-group-inline">
           <div className="form-group">
@@ -118,8 +151,12 @@ const ProfileDetailsForm = () => {
           />
         </div>
         {imageURL && (
-          <div className="image-preview"> 
-            <img src={imageURL} alt="Profile Preview" style={{ width: '100px', height: 'auto', borderRadius: '4px' }} />
+          <div className="image-preview">
+            <img
+              src={imageURL}
+              alt="Profile Preview"
+              style={{ width: '100px', height: 'auto', borderRadius: '4px' }}
+            />
           </div>
         )}
         <button type="submit">Save Changes</button>

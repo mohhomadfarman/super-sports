@@ -8,6 +8,7 @@ import categoriesSliceReducer from './categoriesSlice'
 import roundsSliceReducer from './roundsSlice'
 import createLeaderBoardSliceReducer from './leaderboardSlice'
 import getvideosubmitReducer from './getvideosubmitSlice';
+import userSliceReducer from './userSlice';
 
 
 const store = configureStore({
@@ -21,6 +22,8 @@ const store = configureStore({
     getContestRounds: roundsSliceReducer,
     leaderBorda: createLeaderBoardSliceReducer,
     videosubmit: getvideosubmitReducer,
+    user: userSliceReducer,
+
   },
 });
 

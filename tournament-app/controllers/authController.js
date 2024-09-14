@@ -16,19 +16,41 @@ exports.signup = async (req, res) => {
 
 
 
+// exports.login = async (req, res) => {
+//   const { username, password } = req.body;
+//   try {
+//     const user = await User.findOne({ username });
+//     if (!user || !(await bcrypt.compare(password, user.password))) {
+//       return res.status(400).send("Invalid credentials");
+//     }
+//     const token = jwt.sign({ id: user._id,userRole: user.role}, jwtSecret, { expiresIn: '1h' });
+//     res.send({ token });
+//   } catch (error) {
+//     res.status(500).send(error);
+//   }
+// };
+
 exports.login = async (req, res) => {
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ username });
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    
+    if (!user) {
       return res.status(400).send("Invalid credentials");
     }
-    const token = jwt.sign({ id: user._id,userRole: user.role}, jwtSecret, { expiresIn: '1h' });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).send("Invalid credentials");
+    }
+
+    const token = jwt.sign({ id: user._id, userRole: user.role }, jwtSecret, { expiresIn: '1h' });
     res.send({ token });
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send("Server error");
   }
 };
+
 
 exports.getProfile = async (req, res) => {
   try {
