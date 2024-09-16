@@ -24,6 +24,7 @@ import SocialMediaIntegration from "../components/SocialMediaIntegration";
 
 const role = getUserId()?.userRole;
 const isLoggedIn = !!getToken();
+const userId = getUserId()?.id;
 
 const protects = {
   user: [
@@ -40,8 +41,8 @@ const protects = {
           path: "/profile", 
           element: <ProfilePage />, 
           children: [
-            { path: "details", element: <ProfileDetailsForm /> },
-            { path: "passwordchange", element: <PasswordChange /> },
+            { path: "details", element: <ProfileDetailsForm id={userId} /> },
+            { path: "passwordchange", element: <PasswordChange id={userId}/> },
             { path: "voting-overview", element: <VotingOverview /> },
             { path: "social-media-integration", element: <SocialMediaIntegration /> },
             { path: "settings", element: <SettingsForm /> },

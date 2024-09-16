@@ -83,8 +83,6 @@ const getUserProfile = async (req, res) => {
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-  
-      // Call the changePassword method
       await user.changePassword(oldPassword, newPassword);
   
       res.status(200).json({ message: "Password updated successfully" });

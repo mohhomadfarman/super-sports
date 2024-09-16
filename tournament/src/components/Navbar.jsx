@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Collapse, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import Navbar from "react-bootstrap/Navbar";
 import "./navbar.scss";
 import { NavbarMenu, UserNavbarMenu } from "../assets/Menu";

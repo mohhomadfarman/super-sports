@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserProfile, updateUserProfile } from '../redux/userSlice';
-import '../assets/scss/ProfileDetailsForm.scss'; // Ensure the path is correct
+import { imageBaseUrl } from '../assets/config'; // Use imageBaseUrl to set the base URL for images
+import '../assets/scss/ProfileDetailsForm.scss'; 
 
 const ProfileDetailsForm = ({ id }) => {
   const dispatch = useDispatch();
   const userProfile = useSelector((state) => state.user.profile);
   const loading = useSelector((state) => state.user.loading);
   const error = useSelector((state) => state.user.error);
-
-  // State to manage form inputs
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -18,8 +17,6 @@ const ProfileDetailsForm = ({ id }) => {
     address: "",
     profilePhoto: null,
   });
-
-  // State to hold the image URL
   const [imageURL, setImageURL] = useState(null);
 
   useEffect(() => {
@@ -36,11 +33,11 @@ const ProfileDetailsForm = ({ id }) => {
         email: userProfile.email || "",
         phone: userProfile.phone || "",
         address: userProfile.address || "",
-        profilePhoto: null, // Not setting this here because it's a file input
+        profilePhoto: null,
       });
-      // Assuming profilePhoto URL needs to be fetched
+      // If profilePhoto exists, set the image URL using imageBaseUrl
       if (userProfile.profilePhoto) {
-        setImageURL(userProfile.profilePhoto);
+        setImageURL(`${imageBaseUrl}${userProfile.profilePhoto}`);
       }
     }
   }, [userProfile]);
@@ -60,7 +57,6 @@ const ProfileDetailsForm = ({ id }) => {
       profilePhoto: file,
     });
 
-    // Create a URL for the selected image
     if (file) {
       const url = URL.createObjectURL(file);
       setImageURL(url);
@@ -68,13 +64,12 @@ const ProfileDetailsForm = ({ id }) => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    // Prepare form data for submission
+    e.preventDefault(); // Prevent the form from refreshing
     const updatedData = new FormData();
     for (const key in formData) {
       updatedData.append(key, formData[key]);
     }
-    dispatch(updateUserProfile({ id, formData: updatedData }));
+    dispatch(updateUserProfile({ userId: id, formData: updatedData }));
   };
 
   return (
@@ -82,6 +77,15 @@ const ProfileDetailsForm = ({ id }) => {
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error.message}</p>}
       <form onSubmit={handleSubmit}>
+      {imageURL && (
+          <div className="image-preview">
+            <img
+              src={imageURL}
+              alt="Profile Preview"
+              style={{ width: '50px', height: 'auto', borderRadius: '100px' }}
+            />
+          </div>
+        )}
         <div className="form-group-inline">
           <div className="form-group">
             <label htmlFor="firstName">First Name</label>
@@ -106,7 +110,7 @@ const ProfileDetailsForm = ({ id }) => {
             />
           </div>
         </div>
-        <div className="form-group-half">
+        <div className="form-group-inline">
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
@@ -150,16 +154,8 @@ const ProfileDetailsForm = ({ id }) => {
             onChange={handleFileChange}
           />
         </div>
-        {imageURL && (
-          <div className="image-preview">
-            <img
-              src={imageURL}
-              alt="Profile Preview"
-              style={{ width: '100px', height: 'auto', borderRadius: '4px' }}
-            />
-          </div>
-        )}
-        <button type="submit">Save Changes</button>
+       
+        <button type="submit">Update</button>
       </form>
     </div>
   );

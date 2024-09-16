@@ -1,13 +1,13 @@
 // src/slices/userSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { axiosInstanceToken } from './instence';
 
 // Async thunk to get user profile by ID
 export const getUserProfile = createAsyncThunk(
   'user/getUserProfile',
   async (userId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`api/user/get-profile/${userId}`);
+      const response = await axiosInstanceToken.get(`/user/get-profile/${userId}`);
       return response.data.user;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -18,19 +18,34 @@ export const getUserProfile = createAsyncThunk(
 // Async thunk to update user profile
 export const updateUserProfile = createAsyncThunk(
   'user/updateUserProfile',
-  async ({ userId, formData }, { rejectWithValue }) => {
-    try {
-      const response = await axios.put(`/update-profile/${userId}`, formData, {
+  async (payload) => {
+      const response = await axiosInstanceToken.put(`/user/update-profile/${payload?.userId}`, payload?.formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
       return response.data.user;
+   
+  }
+);
+
+// Async thunk to update user password
+
+export const updateUserPassword = createAsyncThunk(
+  'user/updateUserPassword',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstanceToken.put(`/user/change-password/${payload?.userId}`, {
+        oldPassword: payload?.oldPassword,
+        newPassword: payload?.newPassword,
+      });
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
   }
 );
+
 
 const userSlice = createSlice({
   name: 'user',
