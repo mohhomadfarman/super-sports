@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
-import '../../assets/scss/ProfilePage.scss'; // Correct path
+import '../../assets/scss/ProfilePage.scss';
 
 const ProfilePage = () => {
   return (
@@ -19,13 +19,6 @@ const ProfilePage = () => {
           <li className="list-group-item">
             <Link to="/profile/social-media-integration">Social Media Integration</Link>
           </li>
-          <li className="list-group-item">
-            <Link to="/profile/settings">Settings</Link>
-          </li>
-          <li className="list-group-item">
-            <Link to="/profile/security">Security</Link>
-          </li>
-
         </ul>
       </div>
       <div className="col-9 content">

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserProfile, updateUserProfile } from '../redux/userSlice';
-import { imageBaseUrl } from '../assets/config'; // Use imageBaseUrl to set the base URL for images
+import { imageBaseUrl } from '../assets/config';
 import '../assets/scss/ProfileDetailsForm.scss'; 
 
 const ProfileDetailsForm = ({ id }) => {
@@ -35,7 +35,6 @@ const ProfileDetailsForm = ({ id }) => {
         address: userProfile.address || "",
         profilePhoto: null,
       });
-      // If profilePhoto exists, set the image URL using imageBaseUrl
       if (userProfile.profilePhoto) {
         setImageURL(`${imageBaseUrl}${userProfile.profilePhoto}`);
       }
@@ -64,7 +63,7 @@ const ProfileDetailsForm = ({ id }) => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent the form from refreshing
+    e.preventDefault();
     const updatedData = new FormData();
     for (const key in formData) {
       updatedData.append(key, formData[key]);

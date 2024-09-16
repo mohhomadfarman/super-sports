@@ -66,13 +66,13 @@ function Navbars() {
            <>
             {UserNavbarMenu?.map((menu, key) => (
               <>
-                <Link
+               <Link
                   className={`text-decoration-none  menuList ${
                     key === change ? "active" : ""
                   }`}
                   onClick={() => handleMenuClick(key)}
                   key={key}
-                  to={menu?.toLowerCase()}
+                  to={menu?.toLowerCase() === "profile" ? `${menu?.toLowerCase()}/details`:menu?.toLowerCase()}
                 >
                   {menu}
                 </Link>

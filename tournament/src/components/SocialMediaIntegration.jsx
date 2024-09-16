@@ -2,17 +2,14 @@ import React from 'react';
 import '../assets/scss/SocialMediaIntegration.scss';
 
 function SocialMediaIntegration() {
-  // Dummy data for videos
+
   const videos = [
     { id: 1, title: "Video 1", votes: 120 },
     { id: 2, title: "Video 2", votes: 95 },
     { id: 3, title: "Video 3", votes: 78 }
   ];
-
-  // Function to handle sharing (this can be expanded to actually integrate with social media APIs)
   const handleShare = (platform, video) => {
     alert(`Sharing ${video.title} on ${platform}`);
-    // Logic for integrating with the social media platform goes here
   };
 
   return (

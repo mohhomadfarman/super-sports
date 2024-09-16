@@ -9,8 +9,6 @@ import Tournaments from "../page/user/Tournaments";
 import ContestsUser from "../page/user/Contests";
 import ContestsOpen from "../page/user/ContestsOpen";
 import ProfilePage from "../page/user/ProfilePage";
-import SettingsForm from "../components/SettingsForm";
-import SecurityForm from "../components/SecurityForm";
 import ProfileDetailsForm from "../components/ProfileDetailsForm";
 import Tournament from "../page/admin/Tournament";
 import Matches from "../page/admin/Matches";
@@ -45,8 +43,6 @@ const protects = {
             { path: "passwordchange", element: <PasswordChange id={userId}/> },
             { path: "voting-overview", element: <VotingOverview /> },
             { path: "social-media-integration", element: <SocialMediaIntegration /> },
-            { path: "settings", element: <SettingsForm /> },
-            { path: "security", element: <SecurityForm /> },
           ],
         },
         { path: "*", element: <div>No page found</div> },

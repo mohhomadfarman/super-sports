@@ -4,15 +4,41 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { jwtSecret } = require("../config");
 
+// exports.signup = async (req, res) => {
+//   try {
+//     const user = new User(req.body);
+//     await user.save();
+//     res.status(201).send(user);
+//   } catch (error) {
+//     res.status(400).send(error);
+//   }
+// };
+
 exports.signup = async (req, res) => {
   try {
-    const user = new User(req.body);
-    await user.save();
-    res.status(201).send(user);
+    const { firstName, lastName, phone, password, username } = req.body;
+
+    // Ensure the username is provided
+    if (!username) {
+      return res.status(400).send({ error: "Username is required" });
+    }
+
+    const newUser = new User({
+      firstName,
+      lastName,
+      phone,
+      password, // Consider hashing the password before saving
+      username, // Now using the user-provided username
+    });
+
+    await newUser.save();
+    res.status(201).send(newUser);
   } catch (error) {
     res.status(400).send(error);
   }
 };
+
+
 
 
 

@@ -1,8 +1,6 @@
-// src/slices/userSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { axiosInstanceToken } from './instence';
 
-// Async thunk to get user profile by ID
 export const getUserProfile = createAsyncThunk(
   'user/getUserProfile',
   async (userId, { rejectWithValue }) => {
@@ -15,7 +13,6 @@ export const getUserProfile = createAsyncThunk(
   }
 );
 
-// Async thunk to update user profile
 export const updateUserProfile = createAsyncThunk(
   'user/updateUserProfile',
   async (payload) => {
@@ -28,9 +25,6 @@ export const updateUserProfile = createAsyncThunk(
    
   }
 );
-
-// Async thunk to update user password
-
 export const updateUserPassword = createAsyncThunk(
   'user/updateUserPassword',
   async (payload, { rejectWithValue }) => {
@@ -38,6 +32,25 @@ export const updateUserPassword = createAsyncThunk(
       const response = await axiosInstanceToken.put(`/user/change-password/${payload?.userId}`, {
         oldPassword: payload?.oldPassword,
         newPassword: payload?.newPassword,
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
+export const signupUser = createAsyncThunk(
+  'user/signupUser',
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstanceToken.post('/auth/signup', {
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        phone: userData.phone,
+        username: userData.username,
+        password: userData.password,
       });
       return response.data;
     } catch (error) {
@@ -61,7 +74,6 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Get User Profile
       .addCase(getUserProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -74,7 +86,6 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      // Update User Profile
       .addCase(updateUserProfile.pending, (state) => {
         state.loading = true;
         state.error = null;

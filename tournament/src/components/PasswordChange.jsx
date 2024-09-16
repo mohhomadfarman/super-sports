@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserPassword } from '../redux/userSlice';
-import '../assets/scss/PasswordChange.scss'; // Ensure the path is correct
+import '../assets/scss/PasswordChange.scss'; 
 
 function PasswordChange({ id }) {
   const dispatch = useDispatch();
 
-  // Get the Redux state for handling the password update process
   const { error, passwordUpdateSuccess } = useSelector((state) => state.user);
 
-  // State to manage form inputs
   const [formData, setFormData] = useState({
     oldPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
-
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -24,23 +20,15 @@ function PasswordChange({ id }) {
       [name]: value,
     });
   };
-
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     const { oldPassword, newPassword, confirmPassword } = formData;
-
-    // Check if new password matches confirm password
     if (newPassword !== confirmPassword) {
       alert("New password and confirm password do not match!");
       return;
     }
-
-    // Dispatch the updateUserPassword thunk with the required data
     dispatch(updateUserPassword({ userId: id, oldPassword, newPassword }));
   };
-
-  // Reset form if the password update was successful
   useEffect(() => {
     if (passwordUpdateSuccess) {
       alert("Password updated successfully!");
