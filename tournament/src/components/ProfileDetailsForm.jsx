@@ -13,8 +13,13 @@ const ProfileDetailsForm = ({ id }) => {
     firstName: "",
     lastName: "",
     email: "",
+    streetAddress1: "",
+    streetAddress2: "",
+    city: "",
+    barangay: "",
+    province: "",
     phone: "",
-    address: "",
+    
     profilePhoto: null,
   });
   const [imageURL, setImageURL] = useState(null);
@@ -32,7 +37,11 @@ const ProfileDetailsForm = ({ id }) => {
         lastName: userProfile.lastName || "",
         email: userProfile.email || "",
         phone: userProfile.phone || "",
-        address: userProfile.address || "",
+        streetAddress1: userProfile.streetAddress1 || "",
+        streetAddress2: userProfile.streetAddress2 || "",
+        city: userProfile.city || "",
+        barangay: userProfile.barangay || "",
+        province: userProfile.province || "",
         profilePhoto: null,
       });
       if (userProfile.profilePhoto) {
@@ -133,16 +142,65 @@ const ProfileDetailsForm = ({ id }) => {
             />
           </div>
         </div>
-        <div className="form-group">
-          <label htmlFor="address">Address</label>
-          <textarea
-            id="address"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            required
-          ></textarea>
+        <div className="form-group-inline">
+          <div className="form-group">
+            <label htmlFor="streetAddress1">Street Address 1</label>
+            <input
+              type="text"
+              id="streetAddress1"
+              name="streetAddress1"
+              value={formData.streetAddress1}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="streetAddress2">Street Address 2</label>
+            <input
+              type="text"
+              id="streetAddress2"
+              name="streetAddress2"
+              value={formData.streetAddress2}
+              onChange={handleChange}
+              required
+            />
+          </div>
         </div>
+        <div className="form-group-inline">
+          <div className="form-group">
+            <label htmlFor="city">City</label>
+            <input
+              type="text"
+              id="city"
+              name="city"
+              value={formData.city}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="barangay">Barangay</label>
+            <input
+              type="text"
+              id="barangay"
+              name="barangay"
+              value={formData.barangay}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
+        <div className="form-group">
+            <label htmlFor="province">Province</label>
+            <input
+              type="text"
+              id="province"
+              name="province"
+              value={formData.province}
+              onChange={handleChange}
+              required
+            />
+          </div>
         <div className="form-group">
           <label htmlFor="profilePhoto">Profile Photo</label>
           <input

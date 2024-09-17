@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container } from "react-bootstrap";
 import "./auth.scss";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login } from "../../redux/dataSlice";
 function Login() {
   const [userName,setUserName] =useState();
@@ -14,7 +14,7 @@ function Login() {
 
 const LoginBtn = () =>{
   if(!userName || !password){
-    setErr("Username and Password doesn\'t match")
+    setErr("Username and Password doesn't match")
   }else{
     const payload ={
       username: userName,

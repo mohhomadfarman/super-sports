@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { axiosInstanceToken } from './instence';
 
+// Fetch user profile
 export const getUserProfile = createAsyncThunk(
   'user/getUserProfile',
   async (userId, { rejectWithValue }) => {
@@ -13,18 +14,20 @@ export const getUserProfile = createAsyncThunk(
   }
 );
 
+// Update user profile
 export const updateUserProfile = createAsyncThunk(
   'user/updateUserProfile',
   async (payload) => {
-      const response = await axiosInstanceToken.put(`/user/update-profile/${payload?.userId}`, payload?.formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      return response.data.user;
-   
+    const response = await axiosInstanceToken.put(`/user/update-profile/${payload?.userId}`, payload?.formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data.user;
   }
 );
+
+// Update user password
 export const updateUserPassword = createAsyncThunk(
   'user/updateUserPassword',
   async (payload, { rejectWithValue }) => {
@@ -40,7 +43,7 @@ export const updateUserPassword = createAsyncThunk(
   }
 );
 
-
+// Signup user
 export const signupUser = createAsyncThunk(
   'user/signupUser',
   async (userData, { rejectWithValue }) => {
@@ -59,21 +62,27 @@ export const signupUser = createAsyncThunk(
   }
 );
 
-
 const userSlice = createSlice({
   name: 'user',
   initialState: {
     profile: null,
     loading: false,
     error: null,
+    signupSuccess: false, 
+    message: '', 
   },
   reducers: {
     resetError: (state) => {
       state.error = null;
     },
+    resetSignupState: (state) => {
+      state.signupSuccess = false;
+      state.message = '';
+    },
   },
   extraReducers: (builder) => {
     builder
+      // Get user profile
       .addCase(getUserProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -86,6 +95,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      // Update user profile
       .addCase(updateUserProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -97,9 +107,38 @@ const userSlice = createSlice({
       .addCase(updateUserProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      // Update user password
+      .addCase(updateUserPassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUserPassword.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = 'Password updated successfully'; 
+      })
+      .addCase(updateUserPassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // Signup user
+      .addCase(signupUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.signupSuccess = false;
+      })
+      .addCase(signupUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.signupSuccess = true;
+        state.message = action.payload.message; 
+      })
+      .addCase(signupUser.rejected, (state, action) => {
+        state.loading = false;
+        state.signupSuccess = false;
+        state.error = action.payload;
       });
   },
 });
 
-export const { resetError } = userSlice.actions;
+export const { resetError, resetSignupState } = userSlice.actions;
 export default userSlice.reducer;

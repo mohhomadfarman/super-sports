@@ -2,6 +2,8 @@ import React from "react";
 import { useRoutes } from "react-router-dom";
 import { defaultProtect, protect } from "./utils_sec/Routes";
 import { withoutAuthRoute } from "./utils_sec/helper";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const routing = useRoutes(protect);
@@ -16,9 +18,13 @@ function App() {
   );
 
   const defaultRouting = useRoutes(defaultProtect);
-  if (checkIsWithoutAuthRoute) {
-    return <>{defaultRouting}</>;
-  }
-  return <>{routing}</>;
+  
+  return (
+    <>
+      <ToastContainer />
+      {checkIsWithoutAuthRoute ? defaultRouting : routing}
+    </>
+  );
 }
+
 export default App;

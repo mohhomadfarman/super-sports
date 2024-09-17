@@ -1,13 +1,19 @@
-.navbar{
+.navbar {
     display: flex;
-padding-bottom:0 !important;
-}
-.menuList{
-    color: rgb(107, 107, 107) ;
+    padding-bottom: 5px !important;
+  }
+  
+  .menuList {
+    color: rgb(107, 107, 107);
     padding: 19px 30px;
-}
-
-.menuList.active{
-    color: #0a10c5 ;
+  }
+  
+  .menuList.active {
+    color: #0a10c5;
     border-bottom: 2px solid #0a10c5;
-}
+  }
+  
+  .Signup {
+    margin-left: auto; /* Ensures the signup button is aligned to the right */
+  }
+  

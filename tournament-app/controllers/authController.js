@@ -1,4 +1,3 @@
-// controllers/authController.js
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -17,8 +16,6 @@ const { jwtSecret } = require("../config");
 exports.signup = async (req, res) => {
   try {
     const { firstName, lastName, phone, password, username } = req.body;
-
-    // Ensure the username is provided
     if (!username) {
       return res.status(400).send({ error: "Username is required" });
     }
@@ -27,12 +24,12 @@ exports.signup = async (req, res) => {
       firstName,
       lastName,
       phone,
-      password, // Consider hashing the password before saving
-      username, // Now using the user-provided username
+      password, 
+      username, 
     });
 
     await newUser.save();
-    res.status(201).send(newUser);
+    res.status(201).send({ message: "Signup successful", user: newUser });
   } catch (error) {
     res.status(400).send(error);
   }
