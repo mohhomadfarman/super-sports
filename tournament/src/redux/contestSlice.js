@@ -7,6 +7,11 @@ export const GetContests = createAsyncThunk('GetContests', async () => {
   return response.data;
 });
 
+export const GetHomeContests = createAsyncThunk('GetHomeContests', async () => {
+  const response = await axiosInstanceToken.get('/contests/home-contests');
+  return response.data;
+});
+
 // Async thunk for API call
 export const GetSingleContests = createAsyncThunk('GetSingleContests', async (id) => {
   const response = await axiosInstanceToken.get(`/contests/single/${id}`);

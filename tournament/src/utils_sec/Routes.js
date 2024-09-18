@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 import Login from "../page/auth/Login";
 import Register from "../page/auth/Register";
+import Home from "../page/user/Home"; // Import Home page
 import { getToken, getUserId } from "./auth";
 import DashboardLayout from "./DashboardLayout";
 import LoginLayout from "./LoginLayout";
@@ -69,11 +70,11 @@ const protects = {
   default: [
     {
       path: "/",
-      element: <LoginLayout />,
+      element: !isLoggedIn ? <LoginLayout /> : <Navigate to="/dashboard" />, // Redirect if logged in
       children: [
-        { path: "/", element: <Navigate to="/login" /> },
-        { path: "/login", element: <Login /> },
-        { path: "/signup", element: <Register /> },
+        { path: "/", element: !isLoggedIn ? <Home /> : <Navigate to="/dashboard" /> }, // Show Home if not logged in
+        { path: "/login", element: !isLoggedIn ? <Login /> : <Navigate to="/dashboard" /> }, // Show Login if not logged in
+        { path: "/signup", element: !isLoggedIn ? <Register /> : <Navigate to="/dashboard" /> }, // Show Signup if not logged in
         { path: "*", element: <div>No page found</div> },
       ],
     },

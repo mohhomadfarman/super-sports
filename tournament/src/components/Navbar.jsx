@@ -29,56 +29,70 @@ function Navbars() {
             Sports Name
           </Link>
         </Navbar.Brand>
-        
-        {/* Navbar Menu for Admin */}
-        {role === "admin" && (
-          <div className="Menus d-flex justify-content-between">
-            {NavbarMenu?.map((menu, key) => (
-              <Link
-                className={`text-decoration-none menuList ${key === change ? "active" : ""}`}
-                onClick={() => handleMenuClick(key)}
-                key={key}
-                to={menu?.toLowerCase()}
-              >
-                {menu}
-              </Link>
-            ))}
-            <Link className="text-decoration-none menuList" onClick={logout}>
-              Logout
-            </Link>
-          </div>
-        )}
-        
-        {/* If No User Role */}
-        {!role && (
-          <div className="ms-auto">
-            <Link className="btn btn-primary Signup rounded-1" to="/signup">
-              SIGNUP
-            </Link>
-          </div>
-        )}
 
-        {/* Navbar Menu for User */}
-        {role === "user" && (
-          <div className="Menus d-flex justify-content-between">
-            {UserNavbarMenu?.map((menu, key) => (
-              <Link
-                className={`text-decoration-none menuList ${key === change ? "active" : ""}`}
-                onClick={() => handleMenuClick(key)}
-                key={key}
-                to={menu?.toLowerCase() === "profile" ? `${menu?.toLowerCase()}/details` : menu?.toLowerCase()}
-              >
-                {menu}
-              </Link>
-            ))}
-            <Link className="text-decoration-none menuList" onClick={logout}>
-              Logout
+        <div className="ms-auto d-flex align-items-center">
+          {!role && (
+            <Link 
+              className={`text-decoration-none menuList ${change === -1 ? "active" : ""}`} 
+              onClick={() => handleMenuClick(-1)} 
+              to="/"
+              style={{ marginRight: "15px" }} 
+            >
+              Home
             </Link>
-          </div>
-        )}
+          )}
+
+          {!role && (
+            <>
+              <Link className="btn btn-primary rounded-1" to="/login" style={{ marginRight: "10px" }}>
+                LOGIN
+              </Link>
+              <Link className="btn btn-primary Signup rounded-1" to="/signup">
+                SIGNUP
+              </Link>
+            </>
+          )}
+
+          {role === "admin" && (
+            <div className="Menus d-flex justify-content-between">
+              {NavbarMenu?.map((menu, key) => (
+                <Link
+                  className={`text-decoration-none menuList ${key === change ? "active" : ""}`}
+                  onClick={() => handleMenuClick(key)}
+                  key={key}
+                  to={menu?.toLowerCase()}
+                  style={{ marginRight: "15px" }} 
+                >
+                  {menu}
+                </Link>
+              ))}
+              <Link className="text-decoration-none menuList" onClick={logout}>
+                Logout
+              </Link>
+            </div>
+          )}
+
+          {role === "user" && (
+            <div className="Menus d-flex justify-content-between">
+              {UserNavbarMenu?.map((menu, key) => (
+                <Link
+                  className={`text-decoration-none menuList ${key === change ? "active" : ""}`}
+                  onClick={() => handleMenuClick(key)}
+                  key={key}
+                  to={menu?.toLowerCase() === "profile" ? `${menu?.toLowerCase()}/details` : menu?.toLowerCase()}
+                  style={{ marginRight: "15px" }} 
+                >
+                  {menu}
+                </Link>
+              ))}
+              <Link className="text-decoration-none menuList" onClick={logout}>
+                Logout
+              </Link>
+            </div>
+          )}
+        </div>
       </Container>
     </Container>
   );
 }
-
 export default Navbars;

@@ -24,6 +24,8 @@ router.post('/',auth('admin'), upload.single('image'), contestController.createC
  */
 router.get('/',auth(), contestController.getContests);
 
+router.get('/home-contests', contestController.getHomeContests);
+
 /**
  * @swagger
  * /single/:id:

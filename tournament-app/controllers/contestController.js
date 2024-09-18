@@ -153,6 +153,15 @@ exports.getContests = async (req, res) => {
     res.status(500).send(error.message);
   }
 };
+
+exports.getHomeContests = async (req, res) => {
+  try {
+    const contests = await Contest.find().populate('cities category');
+    res.status(200).send(contests);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
 // Get Contests
 exports.getContestsSignle = async (req, res) => {
   try {
