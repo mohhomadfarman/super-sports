@@ -9,11 +9,13 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   email: { type: String  }, 
   phone: { type: String },  
-  streetAddress1: { type: String }, 
-  streetAddress2: { type: String},
-  barangay: {type: String},
-  city: { type: String},
-  province: {type: String},                           
+  address: {
+    streetAddress1: { type: String }, 
+    streetAddress2: { type: String},
+    barangay: {type: String},
+    city: { type: String},
+    province: {type: String}, 
+  },                          
   profilePhoto: { type: String },
   role: { type: String, enum: ["user", "admin"], default: "user" },
 });

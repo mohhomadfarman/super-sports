@@ -4,6 +4,7 @@ import { signupUser, resetSignupState } from '../../redux/userSlice';
 import { Container } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import "./auth.scss";
 
 function Register() {
   const dispatch = useDispatch();
@@ -52,7 +53,7 @@ function Register() {
   }, [signupSuccess, error, navigate, message, dispatch]);
 
   return (
-    <div>
+    <div className='bannerlogin'>
       <Container className="py-5">
         <div className="form-container shadow-sm p-4 rounded">
           <form onSubmit={handleSubmit}>

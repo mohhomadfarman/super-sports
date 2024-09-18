@@ -20,11 +20,11 @@ const updateUserProfile = async (req, res) => {
     if (address) user.address = address;
     if (firstName) user.firstName = firstName;
     if (lastName) user.lastName = lastName;
-    if (streetAddress1) user.streetAddress1 = streetAddress1;
-    if (streetAddress2) user.streetAddress2 = streetAddress2;
-    if (city) user.city = city;
-    if (barangay) user.barangay = barangay;
-    if (province) user.province = province;
+    if (streetAddress1) user.address.streetAddress1 = streetAddress1;
+    if (streetAddress2) user.address.streetAddress2 = streetAddress2;
+    if (city) user.address.city = city;
+    if (barangay) user.address.barangay = barangay;
+    if (province) user.address.province = province;
 
     // Update the profile photo if file is uploaded
     if (req.file) {
@@ -42,11 +42,7 @@ const updateUserProfile = async (req, res) => {
         profilePhoto: user.profilePhoto,
         firstName: user.firstName,
         lastName: user.lastName,
-        streetAddress1: user.streetAddress1,
-        streetAddress2: user.streetAddress2,
-        city: user.city,
-        barangay: user.barangay,
-        province: user.province
+        address: user.address
       },
     });
   } catch (error) {
@@ -73,11 +69,7 @@ const getUserProfile = async (req, res) => {
           username: user.username,
           email: user.email,
           phone: user.phone,
-          streetAddress1: user.streetAddress1,
-          streetAddress2: user.streetAddress2,
-          city: user.city,
-          barangay: user.barangay,
-          province: user.province,
+          address: user.address,
           profilePhoto: user.profilePhoto,
         },
       });
