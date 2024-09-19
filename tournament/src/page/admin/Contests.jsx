@@ -12,30 +12,38 @@ import ContestsCard from "../../components/ContestsCard";
 
 function Contests() {
   const [show, setShow] = useState(false);
+  const [editItem, setEditItem] = useState(null);
   const dispatch = useDispatch();
   const data = useSelector((state) => state?.GetContest.items);
   const isStatus = useSelector((state) => state?.GetContest.status);
 
-
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setShow(true)
+    setEditItem(null)
+  };
   const handleClose = () => {
-    setShow(false)
+    setShow(false);
     dispatch(GetContests());
-};
+  };
 
   useEffect(() => {
     dispatch(GetContests());
   }, [dispatch]);
 
-  const handelDelete = (id) =>{
-    dispatch(deleteContest(id)).then((res)=>{
+  const handleEdit = (itema) => {
+    setEditItem(itema); // Set the ID for editing
+    setShow(true); // Open the modal or form
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deleteContest(id)).then(() => {
       dispatch(GetContests());
-    })
-}
+    });
+  };
 
   return (
     <div className="py-3">
-       {isStatus === "loading" && <Loader/>}
+      {isStatus === "loading" && <Loader />}
       <Container>
         <div className="actions">
           <button onClick={handleShow} className="pr-btn">
@@ -43,20 +51,19 @@ function Contests() {
           </button>
         </div>
         <Row className="mt-4">
-        {data?.slice()?.reverse()?.map((item, key) => (
-          <Col key={key} md={3} className="mb-3">
-            {console.log(item)}
-          <ContestsCard
+          {data?.slice()?.reverse()?.map((item, key) => (
+            <Col key={key} md={3} className="mb-3">
+              <ContestsCard
                 id={item?._id}
                 startDate={getAllTimes(item?.startDate)?.formattedDate}
-                image={imageBaseUrl + item?.image }
+                image={imageBaseUrl + item?.image}
                 name={item?.name}
                 citie={item?.cities}
-                joinBtn={""}
-                joined={""}
-            />
-          </Col>
-        ))}
+                handleEdit={() => handleEdit(item)} 
+                handleDelete={() => handleDelete(item?._id)}
+              />
+            </Col>
+          ))}
         </Row>
 
         <Table responsive bordered className="mt-3 rounded">
@@ -68,23 +75,35 @@ function Contests() {
           </thead>
           <tbody>
             {data?.slice()?.reverse()?.map((item) => (
-              <tr>
-                <td> 
-                  <div className='Tourament d-flex gap-3'>
-                        <img style={{objectFit:"cover"}} className='rounded-2 ' width={200} height={150} src={imageBaseUrl + item?.image } alt={item?.name} srcset={imageBaseUrl + item?.image } /> 
-                        <div className='d-flex flex-column'>
-                        <span className='fs-3'>{item?.name}</span>
-                        <span >City/Region: {item?.city?.name}</span>
-                        <span >Matches Count: {item?.matches?.length}</span>
-                        <span>Start Date: {getAllTimes(item?.startDate)?.formattedDate}</span>
-                        <span>End Date: {getAllTimes(item?.endDate)?.formattedDate}</span>
-                        </div>
+              <tr key={item?._id}>
+               
+                <td>
+                  <div className="Tourament d-flex gap-3">
+                    <img
+                      style={{ objectFit: "cover" }}
+                      className="rounded-2"
+                      width={200}
+                      height={150}
+                      src={imageBaseUrl + item?.image}
+                      alt={item?.name}
+                    />
+                    <div className="d-flex flex-column">
+                      <span className="fs-3">{item?.name}</span>
+                      <span>City/Region: {item?.city?.name}</span>
+                      <span>Matches Count: {item?.matches?.length}</span>
+                      <span>Start Date: {getAllTimes(item?.startDate)?.formattedDate}</span>
+                      <span>End Date: {getAllTimes(item?.endDate)?.formattedDate}</span>
+                    </div>
                   </div>
                 </td>
                 <td>
                   <span className="d-flex gap-3">
-                  <button onClick={()=>handelDelete(item?._id)} className='btn btn-danger'>Delete</button>
-                  <button className='btn btn-secondary'>Edit</button>
+                    <button onClick={() => handleDelete(item?._id)} className="btn btn-danger">
+                      Delete
+                    </button>
+                    <button className="btn btn-secondary">
+                      Edit
+                    </button>
                   </span>
                 </td>
               </tr>
@@ -96,10 +115,10 @@ function Contests() {
         title={"New Contest"}
         handleClose={handleClose}
         show={show}
-        component={<ContestForm handleClose={handleClose}/>}
-
-        />
+        component={<ContestForm itemEdits={editItem ? editItem : null} handleClose={handleClose}  />}
+      />
     </div>
+    
   );
 }
 

@@ -1,6 +1,6 @@
 
 .card__wrapper {
-  display: flex ;
+  display: flex;
   flex-direction: row;
 }
 
@@ -68,28 +68,28 @@ button:active {
 .banner__wrapper {
   position: relative;
   overflow: hidden;
-  
 }
-.banner_wrapper
-{
+
+.banner_wrapper {
   position: relative;
-  .label{
-    padding: 0;
-    margin: 0;
-    font-size: 10px;
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    background-color: #fff;
-    width: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 36px;
-    color: #7e7e7e;
-    z-index: 10;
-    border-radius: 10px;
-  }
+}
+
+.label {
+  padding: 0;
+  margin: 0;
+  font-size: 10px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background-color: #fff;
+  width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  color: #000;
+  z-index: 10;
+  border-radius: 10px;
 }
 
 .banner {
@@ -111,3 +111,44 @@ button:active {
 .games {
   width: 100%;
 }
+
+.three-dots-icon {
+  position: absolute;
+  top: 5px;
+  right: 18px;
+  cursor: pointer;
+  z-index: 15;
+  size: 111px;
+  font-size: 25px;
+  color: #2d80ff;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 30px; 
+  right: 10px;
+  background: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  display: block;
+  z-index: 20; 
+}
+
+.dropdown-menu button {
+  border: none;
+  background: none;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  color: #2d80ff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.dropdown-menu button:hover {
+  background: #e0e0e0;
+  color: #2d80ff;
+}
+
+

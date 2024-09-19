@@ -1,33 +1,59 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { GetCities } from '../../../redux/citiesSlice';
-import { GetCategories } from '../../../redux/categoriesSlice';
-import { createContests } from '../../../redux/contestSlice';
-import { Container } from 'react-bootstrap';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { GetCities } from "../../../redux/citiesSlice";
+import { GetCategories } from "../../../redux/categoriesSlice";
+import { createContests, UpdateContests } from "../../../redux/contestSlice";
+import { Container } from "react-bootstrap";
+import { imageBaseUrl } from "../../../assets/config";
 
-function ContestForm({ handleClose }) {
+function ContestForm({ handleClose, itemEdits }) {
+
   const dispatch = useDispatch();
   const cityList = useSelector((state) => state?.GetCities?.items);
   const categoriesList = useSelector((state) => state?.GetCategories?.items);
+  const contest = useSelector((state) => state?.contests?.singleContest);
+
+  // const [formData, setFormData] = useState({
+  //   name: itemEdits?.name || "",
+  //   description: itemEdits?.description || "",
+  //   image: itemEdits?.image || "",
+  //   cities: itemEdits?.cities?.[0]?._id || '',
+  //   categories: itemEdits?.category?._id || '', 
+  //   startDate: itemEdits?.startDate?.split('T')[0] || "",
+  //   endDate: itemEdits?.endDate?.split('T')[0] || "",
+  // });
+  const [formData, setFormData] = useState({
+    name: itemEdits !== null ? itemEdits?.name : "",
+    description: itemEdits !== null ? itemEdits?.description : "",
+    image: itemEdits !== null ? itemEdits?.image : "",
+    cities: itemEdits !== null && itemEdits?.cities?.length > 0 ? itemEdits?.cities[0]?._id : "",
+    categories: itemEdits !== null && itemEdits?.category ? itemEdits?.category?._id : "",
+    startDate: itemEdits !== null ? itemEdits?.startDate?.split('T')[0] : "",
+    endDate: itemEdits !== null ? itemEdits?.endDate?.split('T')[0] : "",
+  });
+  
+  const [error, setError] = useState('');
 
   useEffect(() => {
     dispatch(GetCities());
     dispatch(GetCategories());
   }, [dispatch]);
 
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    image: '',
-    cities: '',
-    categories: '',
-    startDate: '',
-    endDate: ''
-  });
+  useEffect(() => {
+    if (contest) {
+      setFormData({
+        name: contest.name || '',
+        description: contest.description || '',
+        image: contest.image || '',
+        cities: contest.cities[0] || '', 
+        categories: contest.category || '', 
+        startDate: contest.startDate?.split('T')[0] || '',
+        endDate: contest.endDate?.split('T')[0] || ''
+      });
+    }
+  }, [contest]);
 
-  const [error, setError] = useState('');
-
-  const handleCreate = () => {
+  const handleSubmit = () => {
     if (!formData.name || !formData.categories) {
       setError('Name and categories are required');
       return;
@@ -36,16 +62,22 @@ function ContestForm({ handleClose }) {
     const form = new FormData();
     form.append('name', formData.name);
     form.append('description', formData.description);
-    form.append('image', formData.image);
+    if (formData.image) form.append('image', formData.image);
     form.append('cities', formData.cities);
     form.append('categories', formData.categories);
     form.append('startDate', formData.startDate);
     form.append('endDate', formData.endDate);
 
-    dispatch(createContests(form)).then((res) => {
-      handleClose();
-    });
-    setError(''); // Clear error message if submission is successful
+    if (itemEdits?._id) {
+      dispatch(UpdateContests({ id: itemEdits._id, data: form })).then(() => {
+        handleClose();
+      });
+    } else {
+      dispatch(createContests(form)).then(() => {
+        handleClose();
+      });
+    }
+    setError('');
   };
 
   const handleChange = (e) => {
@@ -87,13 +119,20 @@ function ContestForm({ handleClose }) {
       </div>
       <div className="mb-3">
         <div className='form-label'>
-          Images
+          Image
           <input 
             type="file" 
             className='form-control' 
             name="image" 
             onChange={handleChange} 
           />
+          {formData.image && (
+            <img 
+              src={imageBaseUrl + formData.image} 
+              alt="Current" 
+              style={{ width: '100px', height: '75px', objectFit: 'cover' }} 
+            />
+          )}
         </div>
       </div>
       <div className="mb-3">
@@ -160,8 +199,8 @@ function ContestForm({ handleClose }) {
         </div>
       </div>
       {error && <div style={{ color: 'red' }}>{error}</div>}
-      <button onClick={handleCreate} className='btn btn-dark rounded-1 px-5 py-2'>
-        Create
+      <button onClick={handleSubmit} className='btn btn-dark rounded-1 px-5 py-2'>
+        {itemEdits?._id ? 'Update' : 'Create'}
       </button>
     </Container>
   );

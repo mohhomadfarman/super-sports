@@ -1,11 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react'; 
 import { useDispatch } from 'react-redux';
 import { GetContests } from '../redux/contestSlice';
 import { FaLocationDot } from 'react-icons/fa6';
+import { BsThreeDots } from "react-icons/bs";
 import { Link } from 'react-router-dom';
+import { getUserId } from '../utils_sec/auth';
 
-function ContestsCard({ image, name, citie, startDate, joined, id }) {
+function ContestsCard({ image, name, citie, startDate, id, handleEdit, handleDelete }) {
     const dispatch = useDispatch();
+    const [showMenu, setShowMenu] = useState(false);
+    const role = getUserId()?.userRole;
+
+    const handleMenuClick = () => {
+        setShowMenu(!showMenu);
+    };
 
     useEffect(() => {
         dispatch(GetContests());
@@ -14,6 +22,20 @@ function ContestsCard({ image, name, citie, startDate, joined, id }) {
     return (
         <div className="games">
             <div className="banner_wrapper">
+                {role === 'admin' && (
+                    <>
+                        <BsThreeDots
+                            className="three-dots-icon"
+                            onClick={handleMenuClick}
+                        />
+                        {showMenu && (
+                            <div className="dropdown-menu show">
+                                <button onClick={() => handleEdit(id)}>Edit</button>
+                                <button onClick={() => handleDelete(id)}>Delete</button>
+                            </div>
+                        )}
+                    </>
+                )}
                 <div className="label">Started at: {startDate}</div>
                 <div className="banner">
                     <img
@@ -37,20 +59,13 @@ function ContestsCard({ image, name, citie, startDate, joined, id }) {
                                 </p>
                             </div>
                         </div>
-                        <Link to={`/contest/${id}`}>
-                            <button className={`border-0`}>
-                                Open
-                            </button>
-                        </Link>
-                        {/* <button
-                            onClick={joinBtn}
-                            disabled={joined}
-                            className={`border-0 ${joined ? "btn btn-secondary" : ""}`}
-                            aria-label={joined ? "Already joined" : "Join contest"}
-                        >
-                            {joined ? "JOINED" : "JOIN"}
-                            {console.log(joined)}
-                        </button> */}
+                        {role === 'admin' && (
+                            <Link to={`/contest/${id}`}>
+                                <button className="border-0">
+                                    Open
+                                </button>
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>
