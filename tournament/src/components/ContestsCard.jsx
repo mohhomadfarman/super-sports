@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'; 
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { GetContests } from '../redux/contestSlice';
 import { FaLocationDot } from 'react-icons/fa6';
@@ -59,8 +59,26 @@ function ContestsCard({ image, name, citie, startDate, id, handleEdit, handleDel
                                 </p>
                             </div>
                         </div>
-                        {role === 'admin' && (
+                        {/* {role === 'admin' && (
                             <Link to={`/contest/${id}`}>
+                                <button className="border-0">
+                                    Open
+                                </button>
+                            </Link>
+                        )} */}
+                        {/* <Link to={`/contest/${id}`}>
+                                <button className="border-0">
+                                    Open
+                                </button>
+                            </Link> */}
+                        {role === 'admin' || role === 'user' ? (
+                            <Link to={`/contest/${id}`}>
+                                <button className="border-0">
+                                    Open
+                                </button>
+                            </Link>
+                        ) : (
+                            <Link to={`/home-contest/${id}`}>
                                 <button className="border-0">
                                     Open
                                 </button>

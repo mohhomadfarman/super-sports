@@ -13,9 +13,11 @@ function Tournament() {
 
     const dispatch = useDispatch()
     const [show, setShow] = useState(false);
+    const [selectedTournament, setSelectedTournament] = useState(null);
 
     const handleClose = () => {
         setShow(false)
+        setSelectedTournament(null);
         dispatch(GetTournamets());
     };
     const handleShow = () => setShow(true);
@@ -29,7 +31,11 @@ function Tournament() {
     const handelDelete = (id) =>{
         dispatch(deleteTournaments(id)).then((res)=>{
           dispatch(GetTournamets());
-        })
+        });
+    };
+    const handleEdit = (tournament) => {
+        setSelectedTournament(tournament);
+        handleShow();
     }
   return (
     <div className='py-3'>
@@ -38,8 +44,6 @@ function Tournament() {
             <div className='actions'>
                 <button onClick={handleShow} className='pr-btn'><CiSquarePlus size={35} /> Create Tournament</button>
             </div>
-
-
             <Table responsive bordered className='mt-3 rounded'>
             <thead>
                 <tr>
@@ -65,22 +69,19 @@ function Tournament() {
                 <td>
                     <span className='d-flex gap-3'>
                     <button onClick={()=>handelDelete(item?._id)} className='btn btn-danger'>Delete</button>
-                    <button className='btn btn-secondary'>Edit</button>
+                    <button onClick={() => handleEdit(item)} className='btn btn-secondary'>Edit</button>
                     </span>
                 </td>
                 </tr>
                 ))}
             </tbody>
             </Table>
-
         </Container>
-
         <ModalForm
-        title={"New Tournament"}
+        title={selectedTournament ? "Edit Tournament" : "New Tournament"}
         handleClose={handleClose}
         show={show}
-        component={<TournamentForms  handleClose={handleClose} />}
-
+        component={<TournamentForms  handleClose={handleClose} tournament={selectedTournament} />}
         />
     </div>
   )

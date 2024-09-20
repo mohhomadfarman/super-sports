@@ -31,8 +31,8 @@ function Contests() {
   }, [dispatch]);
 
   const handleEdit = (itema) => {
-    setEditItem(itema); // Set the ID for editing
-    setShow(true); // Open the modal or form
+    setEditItem(itema);
+    setShow(true);
   };
 
   const handleDelete = (id) => {

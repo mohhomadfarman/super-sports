@@ -116,7 +116,6 @@ const ContestsRounds = () => {
                       #{key + 1}
                     </span>
                     {item?.firstName} {item?.lastName}
-                    {/* View Button to open the modal */}
                     <button
                       className="btn btn-primary ms-auto"
                       onClick={() => handleOpenModal(item)}
@@ -127,7 +126,7 @@ const ContestsRounds = () => {
                 ))}
               </div>
             </div>
-          </Col>
+          </Col>  
         </Row>
         <ModalForm
           title={"Add Rounds"}

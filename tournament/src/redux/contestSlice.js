@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { axiosInstanceToken, axiosInstanceTokenFormData } from './instence';
 
-// Async thunks for API calls
 export const GetContests = createAsyncThunk('GetContests', async () => {
   const response = await axiosInstanceToken.get('/contests');
   return response.data;
@@ -14,6 +13,11 @@ export const GetHomeContests = createAsyncThunk('GetHomeContests', async () => {
 
 export const GetSingleContests = createAsyncThunk('GetSingleContests', async (id) => {
   const response = await axiosInstanceToken.get(`/contests/single/${id}`);
+  return response.data;
+});
+
+export const GetHomeSingleContests = createAsyncThunk('GetHomeSingleContests', async (id) => {
+  const response = await axiosInstanceToken.get(`/contests/home-single/${id}`);
   return response.data;
 });
 
@@ -69,7 +73,7 @@ const contestSlice = createSlice({
       })
       .addCase(createContests.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.items.push(action.payload); // Add the new contest to the list
+        state.items.push(action.payload); 
       })
       .addCase(createContests.rejected, (state, action) => {
         state.status = 'failed';
@@ -80,7 +84,7 @@ const contestSlice = createSlice({
       })
       .addCase(deleteContest.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.items = state.items.filter((item) => item._id !== action.payload._id); // Remove the deleted contest from the list
+        state.items = state.items.filter((item) => item._id !== action.payload._id); 
       })
       .addCase(deleteContest.rejected, (state, action) => {
         state.status = 'failed';
@@ -93,7 +97,7 @@ const contestSlice = createSlice({
         state.status = 'succeeded';
         state.items = state.items.map((item) =>
           item._id === action.payload._id ? action.payload : item
-        ); // Update the contest in the list
+        ); 
       })
       .addCase(UpdateContests.rejected, (state, action) => {
         state.status = 'failed';
@@ -104,7 +108,6 @@ const contestSlice = createSlice({
       })
       .addCase(joinContest.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        // Handle the joined contest state if needed
       })
       .addCase(joinContest.rejected, (state, action) => {
         state.status = 'failed';

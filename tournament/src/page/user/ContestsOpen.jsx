@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { Accordion, Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { GetSingleContests } from "../../redux/contestSlice";
+import { GetHomeSingleContests, GetSingleContests } from "../../redux/contestSlice";
 import { imageBaseUrl } from "../../assets/config";
 import AddSubRounds from "../admin/Forms/AddSubRounds";
 import { getContestRounds } from "../../redux/roundsSlice";
@@ -15,17 +15,22 @@ function ContestsOpen() {
   const dispatch = useDispatch();
   const [data, setData] = useState(null);
   const [show, setShow] = useState(false);
-  const [selectedContestId, setSelectedContestId] = useState(null);
   const rounds = useSelector((state) => state.getContestRounds.items);
 
+  // Memoized userid to prevent re-calculation on every render
   const userid = useMemo(() => getUserId()?.id, []);
-  
+
+  // Fetch contest and rounds when component mounts or id, userid changes
   useEffect(() => {
     dispatch(getContestRounds(id));
-    dispatch(GetSingleContests(id)).then((res) => {
+    
+    // If user is logged in, fetch with GetSingleContests, else use GetHomeSingleContests
+    const fetchContest = userid ? GetSingleContests : GetHomeSingleContests;
+    
+    dispatch(fetchContest(id)).then((res) => {
       setData(res.payload);
     });
-  }, [id, dispatch]);
+  }, [id, userid, dispatch]); // Include userid as a dependency
 
   const handleClose = () => {
     setShow(false);
@@ -34,12 +39,15 @@ function ContestsOpen() {
     });
   };
 
-  const handleShow = (contestId) => {
-    setSelectedContestId(contestId);
+  const handleShow = () => {
     setShow(true);
   };
 
-  const isUserJoined = useMemo(() => data?.participants?.some((item) => item?._id === userid), [data, userid]);
+  // Check if user has joined the contest
+  const isUserJoined = useMemo(
+    () => data?.participants?.some((item) => item?._id === userid),
+    [data, userid]
+  );
 
   return (
     <>
@@ -55,14 +63,23 @@ function ContestsOpen() {
           <Col md={12} className="mt-5 mx-5 text-white">
             <h1>{data?.name}</h1>
             <p>{data?.description}</p>
-
-            <button
-              onClick={() => handleShow(data?._id)}
-              disabled={isUserJoined}
-              className={`border-0 fs-5 ${isUserJoined ? "btn btn-secondary" : ""}`}
-            >
-              {isUserJoined ? "JOINED" : "JOIN NOW"}
-            </button>
+            {userid ? (
+              <button
+                onClick={handleShow}
+                disabled={isUserJoined}
+                className={`border-0 fs-5 ${
+                  isUserJoined ? "btn btn-secondary" : ""
+                }`}
+              >
+                {isUserJoined ? "JOINED" : "JOIN NOW"}
+              </button>
+            ) : (
+              <a href="/login">
+                <button className={`border-0 fs-5 "btn btn-secondary"`}>
+                  JOIN NOW
+                </button>
+              </a>
+            )}
           </Col>
         </Row>
       </Container>
@@ -80,7 +97,9 @@ function ContestsOpen() {
                     </Accordion.Header>
                     <Accordion.Body>
                       <AddSubRounds
-                        NoFoundMsg={!item?.SubRounds.length && "No Sub Rounds Found"}
+                        NoFoundMsg={
+                          !item?.SubRounds.length && "No Sub Rounds Found"
+                        }
                         subRound={item?.SubRounds}
                         id={item?._id}
                       />
@@ -102,9 +121,13 @@ function ContestsOpen() {
                 {data?.participants?.map((item, key) => (
                   <p
                     key={key}
-                    className={`text-capitalize d-flex gap-3 align-items-center fs-5 text-secondary border p-2 rounded ${userid === item?._id ? "bg-primary-2" : ""}`}
+                    className={`text-capitalize d-flex gap-3 align-items-center fs-5 text-secondary border p-2 rounded ${
+                      userid === item?._id ? "bg-primary-2" : ""
+                    }`}
                   >
-                    <span className="btn px-3 bg-success rounded-5 text-white">#{key + 1}</span>
+                    <span className="btn px-3 bg-success rounded-5 text-white">
+                      #{key + 1}
+                    </span>
                     {item?.firstName} {item?.lastName}
                   </p>
                 ))}

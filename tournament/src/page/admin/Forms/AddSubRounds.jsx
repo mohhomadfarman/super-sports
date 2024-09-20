@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import ModalForm from "./ModalForm";
 import RoundsFrom from "./RoundsFrom";
 import { getUserId } from "../../../utils_sec/auth";
@@ -9,7 +9,7 @@ const AddSubRounds = ({ subRound, id, NoFoundMsg }) => {
   const [show, setShow] = useState(false);
   const [showTwo, setShowTwo] = useState(false);
   const [winnersData, setWinnersData] = useState(false);
-
+  const userid = useMemo(() => getUserId()?.id, []);
   const handleShowAdd = (item) => {
     setShowTwo(true);
     setWinnersData(item);
@@ -41,11 +41,12 @@ const AddSubRounds = ({ subRound, id, NoFoundMsg }) => {
                 </span>
                 <span>{item?.name}</span>
               </div>
-              <div className="d-flex gap-3">
+              {userid &&  <div className="d-flex gap-3">
                 <button onClick={() => handleShowAdd(item?._id)} className="border-0 rounded align-items-center d-flex gap-2">
                   <LiaEyeSolid size={18}/> Winner Lists
                 </button>
-              </div>
+              </div>}
+             
             </div>
           </div>
         ))}

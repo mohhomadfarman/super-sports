@@ -35,6 +35,8 @@ router.get('/home-contests', contestController.getHomeContests);
  */
 router.get('/single/:id',auth(), contestController.getContestsSignle);
 
+router.get('/home-single/:id', contestController.getContestsSignle);
+
 
 /**
  * @swagger

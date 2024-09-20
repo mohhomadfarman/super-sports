@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import Login from "../page/auth/Login";
 import Register from "../page/auth/Register";
-import Home from "../page/user/Home"; // Import Home page
+import Home from "../page/user/Home";
 import { getToken, getUserId } from "./auth";
 import DashboardLayout from "./DashboardLayout";
 import LoginLayout from "./LoginLayout";
@@ -20,6 +20,7 @@ import ContestsRounds from "../page/admin/ContestsRounds";
 import PasswordChange from "../components/PasswordChange";
 import VotingOverview from "../components/VotingOverview";
 import SocialMediaIntegration from "../components/SocialMediaIntegration";
+
 
 const role = getUserId()?.userRole;
 const isLoggedIn = !!getToken();
@@ -70,11 +71,12 @@ const protects = {
   default: [
     {
       path: "/",
-      element: !isLoggedIn ? <LoginLayout /> : <Navigate to="/dashboard" />, // Redirect if logged in
+      element: !isLoggedIn ? <LoginLayout /> : <Navigate to="/dashboard" />, 
       children: [
-        { path: "/", element: !isLoggedIn ? <Home /> : <Navigate to="/dashboard" /> }, // Show Home if not logged in
-        { path: "/login", element: !isLoggedIn ? <Login /> : <Navigate to="/dashboard" /> }, // Show Login if not logged in
-        { path: "/signup", element: !isLoggedIn ? <Register /> : <Navigate to="/dashboard" /> }, // Show Signup if not logged in
+        { path: "/", element: !isLoggedIn ? <Home /> : <Navigate to="/dashboard" /> },
+        { path: "/login", element: !isLoggedIn ? <Login /> : <Navigate to="/dashboard" /> },
+        { path: "/signup", element: !isLoggedIn ? <Register /> : <Navigate to="/dashboard" /> },
+        { path: "/home-contest/:id", element: <ContestsOpen /> },
         { path: "*", element: <div>No page found</div> },
       ],
     },
