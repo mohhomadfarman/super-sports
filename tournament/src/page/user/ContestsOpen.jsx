@@ -49,6 +49,12 @@ function ContestsOpen() {
     [data, userid]
   );
 
+  // Inline style for blur effect
+  const blurStyle = {
+    filter: "blur(5px)",
+    pointerEvents: "none" // Prevent interaction while blurred
+  };
+
   return (
     <>
       <Container className="position-relative container-bg mt-3">
@@ -109,7 +115,7 @@ function ContestsOpen() {
               </Accordion>
             </div>
           </Col>
-          <Col md={4} className="mt-4">
+          <Col md={4} className="mt-4" style={!isUserJoined ? blurStyle : {}}>
             <div className="navbar bg-light px-3 rounded">
               <h3 className="d-flex justify-content-between w-100">
                 Participants
