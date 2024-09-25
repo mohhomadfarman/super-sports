@@ -1,11 +1,60 @@
 .navbar {
+  display: flex;
+  padding-bottom: 5px !important;
+  position: relative;
+  
+  .navbar-toggler {
+    border: none;
+    background: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .d-none {
+    @media (max-width: 991px) { // Bootstrap's default breakpoint for large screens
+      display: none;
+    }
+  }
+
+  .menu-wrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 50vw; /* Adjust this to cover half of the screen */
+    height: 100%;
+    background: #fff;
+    box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.2);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+  }
+  
+  .menu-wrapper.show {
+    transform: translateX(0);
+  }
+  
+  .menu-content {
     display: flex;
-    padding-bottom: 5px !important;
+    flex-direction: column;
+    justify-content: center; /* Center-aligns items vertically */
+    align-items: center; /* Center-aligns items horizontally */
+    height: 100%;
+  }
+  
+  .menu-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
   }
   
   .menuList {
     color: rgb(107, 107, 107);
-    padding: 19px 30px;
+    padding: 15px 0;
+    text-align: center; /* Center-align text */
   }
   
   .menuList.active {
@@ -13,7 +62,8 @@
     border-bottom: 2px solid #0a10c5;
   }
   
-  .Signup {
-    margin-left: auto; /* Ensures the signup button is aligned to the right */
+  .btn {
+    margin: 10px 0;
   }
   
+}

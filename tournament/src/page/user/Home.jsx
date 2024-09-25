@@ -42,15 +42,15 @@ function Home() {
   return (
     <div className="container home">
       <div className="header">
-        <h1>Contests</h1>
+        {/* <h1>Contests</h1> */}
         <div className="search-container">
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search Contests"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <button className='btn btn-primary rounded-1 fs-5' style={{marginRight: "10px"}}>SEARCH</button>
+          {/* <button className='btn btn-primary rounded-1 fs-5' style={{marginRight: "10px"}}>SEARCH</button> */}
         </div>
       </div>
       <div className="contests-grid">
