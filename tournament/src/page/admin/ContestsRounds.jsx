@@ -3,7 +3,7 @@ import { Accordion, Col, Container, Row} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { CiSquarePlus } from "react-icons/ci";
-import { getContestRounds } from "../../redux/roundsSlice";
+import { getContestRounds, deleteRounds } from "../../redux/roundsSlice";
 import { imageBaseUrl } from "../../assets/config";
 import { GetSingleContests } from "../../redux/contestSlice";
 import AddSubRounds from "./Forms/AddSubRounds";
@@ -14,9 +14,9 @@ import LeaderboardForm from "./Forms/LeaderboardForm";
 const ContestsRounds = () => {
   const [show, setShow] = useState(false);
   const [contest, setContest] = useState();
-  const [videoModalShow, setVideoModalShow] = useState(false); // for video modal
-  const [selectedParticipant, setSelectedParticipant] = useState(null); // to store selected participant
-
+  const [videoModalShow, setVideoModalShow] = useState(false); 
+  const [selectedParticipant, setSelectedParticipant] = useState(null);
+  const [selectedRound, setSelectedRounds] = useState(null);
   const dispatch = useDispatch();
   const { id } = useParams();
   const data = useSelector((state) => state.getContestRounds.items);
@@ -34,16 +34,24 @@ const ContestsRounds = () => {
     dispatch(getContestRounds(id));
   }, [dispatch, id]);
 
-  // For opening the video modal
   const handleOpenModal = (participant) => {
     setSelectedParticipant(participant);
     setVideoModalShow(true);
   };
 
-  // For closing the video modal
   const handleCloseModal = () => {
     setVideoModalShow(false);
   };
+  const handleEdit = (rounds) => {
+    setSelectedRounds(rounds);
+    handleShow();
+}
+
+const handleDeleteClick = (roundId) => {
+  dispatch(deleteRounds(roundId)).then(() => {
+    dispatch(getContestRounds(id)); 
+  });
+};
 
   return (
     <>
@@ -78,8 +86,13 @@ const ContestsRounds = () => {
                     <div className="d-flex justify-content-between w-100">
                       <h3>{item?.name}</h3>
                       <span className="d-flex gap-3">
-                        <button className="btn btn-danger">Delete</button>
-                        <button className="btn btn-secondary me-5">Edit</button>
+                      <button
+                          className="btn btn-danger"
+                          onClick={() => handleDeleteClick(item?._id)} // Call handleDelete on click
+                        >
+                          Delete
+                        </button>
+                        <button onClick={() => handleEdit(item)} className="btn btn-secondary me-5">Edit</button>
                       </span>
                     </div>
                   </Accordion.Header>
@@ -130,10 +143,10 @@ const ContestsRounds = () => {
           </Col>
         </Row>
         <ModalForm
-          title={"Add Rounds"}
+          title={selectedRound ? "Edit Rounds" : "New Rounds"}
           handleClose={handleClose}
           show={show}
-          component={<RoundsFrom handleClose={handleClose} />}
+          component={<RoundsFrom handleClose={handleClose} rounds={selectedRound}/>}
         />
         <ModalForm
           title={`Participant Video - ${selectedParticipant?.firstName?.charAt(0).toUpperCase() + selectedParticipant?.firstName?.slice(1)} ${selectedParticipant?.lastName?.charAt(0).toUpperCase() + selectedParticipant?.lastName?.slice(1)}`}

@@ -3,16 +3,12 @@ import { Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetCities } from '../../../redux/citiesSlice';
 import { useParams } from 'react-router-dom';
-import { createRounds } from '../../../redux/roundsSlice';
+import { createRounds, UpdateRounds } from '../../../redux/roundsSlice';
 
-const RoundsForm = ({ handleClose, type, id }) => {
+const RoundsForm = ({ handleClose, type, id, rounds }) => {
   const dispatch = useDispatch();
   const cities = useSelector((state) => state.GetCities.items);
   const { id: contestId } = useParams();
-
-  useEffect(() => {
-    dispatch(GetCities());
-  }, [dispatch]);
 
   const initialState = {
     name: '',
@@ -29,25 +25,50 @@ const RoundsForm = ({ handleClose, type, id }) => {
   const [formData, setFormData] = useState(initialState);
   const [error, setError] = useState('');
 
-  const handleCreate = useCallback(() => {
-    if (!formData.name || !formData.numberOfWinners) {
-      setError('Name and Number of Winners are required');
-      return;
+  useEffect(() => {
+    dispatch(GetCities());
+    if (rounds) {
+      setFormData({
+        name: rounds.name || '',
+        city: rounds.city?._id || '',
+        startDate: rounds.startDate ? new Date(rounds.startDate).toISOString().split('T')[0] : '',
+        endDate: rounds.endDate ? new Date(rounds.endDate).toISOString().split('T')[0] : '',
+        numberOfWinners: rounds.numberOfWinners || '',
+        isStatus: rounds.isStatus || '',
+        contestId: contestId,
+        roundId: id,
+        type: type
+      });
     }
-
-    if (!type) {
-      dispatch(createRounds(formData)).then(() => handleClose());
-    } else if (type === 'subRound') {
-      dispatch(createRounds(formData)).then(() => handleClose());
-    }
-
-    setError(''); // Clear error message if submission is successful
-  }, [dispatch, formData, handleClose, type]);
+  }, [dispatch, rounds, contestId, id, type]);
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   }, []);
+
+  const handleSubmit = async () => {
+    if (!formData.name || !formData.numberOfWinners) {
+      setError('Name and numberOfWinners are required');
+      return;
+    }
+  
+    try {
+      if (rounds) {
+        await dispatch(UpdateRounds({ id: rounds._id, form: formData })).unwrap();
+        handleClose();
+      } else if (type === 'subRound') {
+        await dispatch(createRounds(formData)).unwrap();
+        handleClose();
+      } else {
+        await dispatch(createRounds(formData)).unwrap();
+        handleClose();
+      }
+      setError('');
+    } catch (err) {
+      setError('Error processing request');
+    }
+  };
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -137,8 +158,8 @@ const RoundsForm = ({ handleClose, type, id }) => {
         </label>
       </div>
       {error && <div style={{ color: 'red' }}>{error}</div>}
-      <button onClick={handleCreate} className="btn btn-dark rounded-1 px-5 py-2">
-        Create
+      <button onClick={handleSubmit} className='btn btn-dark rounded-1 px-5 py-2'>
+        {rounds ? 'Update' : 'Create'}
       </button>
     </Container>
   );

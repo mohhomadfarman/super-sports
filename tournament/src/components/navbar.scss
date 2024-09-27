@@ -36,9 +36,11 @@
   .menu-content {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Center-aligns items vertically */
-    align-items: center; /* Center-aligns items horizontally */
-    height: 100%;
+    justify-content: flex-start; /* Align items to the top */
+    align-items: flex-start; /* Align items to the left */
+    padding-top: 20px; /* Add some padding from the top */
+    padding-left: 20px; /* Optional: Add padding from the left */
+    width: 100%;
   }
   
   .menu-close {
@@ -53,8 +55,8 @@
   
   .menuList {
     color: rgb(107, 107, 107);
-    padding: 15px 0;
-    text-align: center; /* Center-align text */
+    padding: 15px 10px;
+    text-align: center; 
   }
   
   .menuList.active {
@@ -63,7 +65,7 @@
   }
   
   .btn {
-    margin: 10px 0;
+    margin: 10px 20px;
   }
   
 }
