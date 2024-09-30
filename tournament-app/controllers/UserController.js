@@ -4,7 +4,7 @@ const User = require("../models/User");
 // Update user profile details including profile photo
 const updateUserProfile = async (req, res) => {
   try {
-    const { email, phone, address, firstName, lastName, streetAddress1, streetAddress2, city, province, barangay} = req.body;
+    const { email, phone, address, firstName, lastName, streetAddress1, streetAddress2, city, province, barangay,dob,age,gender} = req.body;
     const userId = req.params.id;
 
     // Find the user by ID
@@ -25,6 +25,9 @@ const updateUserProfile = async (req, res) => {
     if (city) user.address.city = city;
     if (barangay) user.address.barangay = barangay;
     if (province) user.address.province = province;
+    if (dob) user.dob = dob;
+    if (age) user.age = age;
+    if (gender) user.gender = gender;
 
     // Update the profile photo if file is uploaded
     if (req.file) {
@@ -42,7 +45,10 @@ const updateUserProfile = async (req, res) => {
         profilePhoto: user.profilePhoto,
         firstName: user.firstName,
         lastName: user.lastName,
-        address: user.address
+        address: user.address,
+        dob: user.dob,
+        age: user.age,
+        gender: user.gender,
       },
     });
   } catch (error) {
@@ -71,6 +77,9 @@ const getUserProfile = async (req, res) => {
           phone: user.phone,
           address: user.address,
           profilePhoto: user.profilePhoto,
+          dob: user.dob,
+          age: user.age,
+          gender: user.gender
         },
       });
     } catch (error) {

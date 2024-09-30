@@ -15,7 +15,10 @@ const userSchema = new mongoose.Schema({
     barangay: {type: String},
     city: { type: String},
     province: {type: String}, 
-  },                          
+  }, 
+  dob: { type: Date, required: true },
+  age: { type: Number },
+  gender: { type: String, enum: ["male", "female", "other"], required: true },                             
   profilePhoto: { type: String },
   role: { type: String, enum: ["user", "admin"], default: "user" },
 });

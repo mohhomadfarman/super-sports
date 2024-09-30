@@ -22,18 +22,18 @@ const ProfileDetailsForm = ({ id }) => {
     province: "",
     phone: "",
     profilePhoto: null,
+    dob: "",
+    age: "",
+    gender: ""
   });
   
   const [imageURL, setImageURL] = useState(null);
-
-  // Fetch the user profile when the component mounts or id changes
   useEffect(() => {
     if (id) {
       dispatch(getUserProfile(id));
     }
   }, [id, dispatch]);
 
-  // Update the form fields when the userProfile changes
   useEffect(() => {
     if (userProfile) {
       setFormData({
@@ -46,41 +46,69 @@ const ProfileDetailsForm = ({ id }) => {
         city: userProfile.address?.city || "",
         barangay: userProfile.address?.barangay || "",
         province: userProfile.address?.province || "",
-        profilePhoto: null, // Reset photo field for new upload
+        profilePhoto: null,
+        dob: userProfile.dob ? userProfile.dob.split('T')[0] : "", 
+        age: calculateAge(userProfile.dob) || "",
+        gender: userProfile.gender || "",
       });
-      
-      // Set image preview URL
       if (userProfile.profilePhoto) {
         setImageURL(`${imageBaseUrl}${userProfile.profilePhoto}`);
       }
     }
   }, [userProfile]);
 
+  console.log(formData,userProfile);
+
+
+  const calculateAge = (dob) => {
+    if (!dob) return "";
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+  
+
   // Handle input change for text fields
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData({
+  //     ...formData,
+  //     [name]: value,
+  //   });
+  // };
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    if (name === "dob") {
+      const calculatedAge = calculateAge(value);
+      setFormData({
+        ...formData,
+        [name]: value, 
+        age: calculatedAge, 
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
-
-  // Handle file input change for profile photo
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFormData({
       ...formData,
       profilePhoto: file,
     });
-
-    // Preview the uploaded image
     if (file) {
       const url = URL.createObjectURL(file);
       setImageURL(url);
     }
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     const updatedData = new FormData();
@@ -208,6 +236,44 @@ const ProfileDetailsForm = ({ id }) => {
             onChange={handleChange}
             required
           />
+        </div>
+        <div className="form-group">
+          <label htmlFor="dob">Date Of Birth</label>
+          <input
+            type="date"
+            id="dob"
+            name="dob"
+            value={formData.dob}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="age">Age</label>
+          <input
+            type="text"  // Should be 'text' or 'number', not 'age'
+            id="age"
+            name="age"
+            value={formData.age}
+            onChange={handleChange}
+            readOnly  // Make it read-only since it's auto-calculated
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="gender">Gender</label>
+          <select
+            id="gender"
+            name="gender"
+            value={formData.gender}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
         </div>
         <div className="form-group">
           <label htmlFor="profilePhoto">Profile Photo</label>
