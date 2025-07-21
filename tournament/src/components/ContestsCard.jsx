@@ -6,7 +6,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { Link } from 'react-router-dom';
 import { getUserId } from '../utils_sec/auth';
 
-function ContestsCard({ image, name, citie, startDate, id, handleEdit, handleDelete }) {
+function ContestsCard({ image, name, citie, startDate, id, handleEdit, handleDelete , Paths}) {
     const dispatch = useDispatch();
     const [showMenu, setShowMenu] = useState(false);
     const role = getUserId()?.userRole;
@@ -72,7 +72,7 @@ function ContestsCard({ image, name, citie, startDate, id, handleEdit, handleDel
                                 </button>
                             </Link> */}
                         {role === 'admin' || role === 'user' ? (
-                            <Link to={`/contest/${id}`}>
+                            <Link to={`${Paths ? Paths : "/contest"}/${id}`}>
                                 <button className="border-0">
                                     Open
                                 </button>

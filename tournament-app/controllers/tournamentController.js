@@ -2,50 +2,76 @@
 const Tournament = require("../models/Tournament");
 const fs = require('fs');
 const path = require('path');
+// exports.createTournament = async (req, res) => {
+//   try {
+//     const { name, city, matches,startDate,endDate } = req.body;
+
+//     // Check if the required fields are present
+//     if (!name || !city) {
+//       return res.status(400).json({ message: "Name and city are required" });
+//     }
+
+//     // Handle file upload
+//     const image = req.file ? req.file.path : undefined;
+
+//     // Create a new tournament
+//     const newTournament = new Tournament({
+//       name,
+//       city,
+//       matches,
+//       file: image, // Ensure this matches your model's field name
+//       startDate,
+//       endDate
+//     });
+
+//     // Save the tournament
+//     await newTournament.save();
+//     res.status(201).json(newTournament);
+//   } catch (error) {
+//     console.error(error.message); // Log error for debugging
+//     res.status(500).json({ message: "Server Error", error: error.message });
+//   }
+// };
+
+
+
 exports.createTournament = async (req, res) => {
   try {
-    const { name, city, matches,startDate,endDate } = req.body;
+    const { name, description, city, categories, startDate, endDate } = req.body;
+    const imagePath = req.file ? req.file.path : null;
 
-    // Check if the required fields are present
-    if (!name || !city) {
-      return res.status(400).json({ message: "Name and city are required" });
-    }
-
-    // Handle file upload
-    const image = req.file ? req.file.path : undefined;
-
-    // Create a new tournament
-    const newTournament = new Tournament({
+    const Tournaments= new Tournament({
       name,
-      city,
-      matches,
-      file: image, // Ensure this matches your model's field name
+      description,
+      file: imagePath,
+      city: city, // Assuming cities are sent as a comma-separated string
+      category: categories, // Assuming categories are sent as a comma-separated string
       startDate,
       endDate
     });
 
-    // Save the tournament
-    await newTournament.save();
-    res.status(201).json(newTournament);
+    await Tournaments.save();
+    res.status(201).send(Tournaments);
   } catch (error) {
-    console.error(error.message); // Log error for debugging
-    res.status(500).json({ message: "Server Error", error: error.message });
+    res.status(500).send(error.message);
   }
 };
 
+
 exports.getTournaments = async (req, res) => {
   try {
-    const tournaments = await Tournament.find().populate("city matches");
-    res.send(tournaments);
+    const tournaments = await Tournament.find().populate('city category');
+    res.status(200).send(tournaments);
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send(error.message);
   }
 };
+
 
 exports.getSingleTournaments = async (req, res) =>{
   const tournamentId = req.params.id;
   try {
-    const tournaments = await Tournament.findById(tournamentId).populate("city matches");
+    const tournaments = await Tournament.findById(tournamentId).populate("city category");
     res.send(tournaments);
   } catch (error) {
     res.status(500).send(error);

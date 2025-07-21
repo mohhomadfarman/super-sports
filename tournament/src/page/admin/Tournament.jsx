@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Table } from 'react-bootstrap'
+import { Col, Container, Table } from 'react-bootstrap'
 import { CiSquarePlus } from "react-icons/ci";
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteTournaments, GetTournamets } from '../../redux/tournamentSlice';
@@ -8,6 +8,8 @@ import TournamentForms from './Forms/TournamentForms';
 import { imageBaseUrl } from '../../assets/config';
 import { getAllTimes } from '../../utils_sec/auth';
 import Loader from '../../components/Loader';
+import TournamentCard from '../../components/TournamentCard';
+import ContestsCard from '../../components/ContestsCard';
 
 function Tournament() {
 
@@ -42,9 +44,25 @@ function Tournament() {
         {isStatus === "loading" && <Loader/>}
         <Container>
             <div className='actions'>
-                <button onClick={handleShow} className='pr-btn'><CiSquarePlus size={35} /> Create Tournament</button>
+                <button onClick={handleShow} className='pr-btn'><CiSquarePlus size={35} />Create Tournament</button>
             </div>
-            <Table responsive bordered className='mt-3 rounded'>
+           { data?.slice()?.reverse().map((item,key) =>(
+            //   <TournamentCard id={item?._id} startDate={getAllTimes(item?.startDate)?.formattedDate} image={imageBaseUrl + item?.file} name={item?.name} citie={item?.city?.name} />
+
+               <Col key={key} md={3} className="mb-3">
+                            <ContestsCard
+                              id={item?._id}
+                              startDate={getAllTimes(item?.startDate)?.formattedDate}
+                              image={imageBaseUrl + item?.file}
+                              name={item?.name}
+                              citie={item?.cities}
+                              handleEdit={() => handleEdit(item)} 
+                              handleDelete={() => handelDelete(item?._id)}
+                              Paths="/tournaments"
+                            />
+                          </Col>
+           ))}
+           {/* <Table responsive bordered className='mt-3 rounded'>
             <thead>
                 <tr>
                 <th>Tournament</th>
@@ -60,7 +78,7 @@ function Tournament() {
                         <div className='d-flex flex-column'>
                         <span className='fs-3'>{item?.name}</span>
                         <span >City/Region: {item?.city?.name}</span>
-                        <span >Matches Count: {item?.matches?.length}</span>
+                        <span >Matches Count: {item?.rounds?.length}</span>
                         <span>Start Date: {getAllTimes(item?.startDate)?.formattedDate}</span>
                         <span>End Date: {getAllTimes(item?.endDate)?.formattedDate}</span>
                         </div>
@@ -75,7 +93,7 @@ function Tournament() {
                 </tr>
                 ))}
             </tbody>
-            </Table>
+            </Table> */}
         </Container>
         <ModalForm
         title={selectedTournament ? "Edit Tournament" : "New Tournament"}

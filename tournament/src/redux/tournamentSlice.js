@@ -25,6 +25,11 @@ export const CreateTournament = createAsyncThunk('CreateTournament', async (payl
 });
 
 
+export const GetTournametsSingle = createAsyncThunk('GetTournametsSingle', async (id) => {
+  const response = await axiosInstanceToken.get(`/tournaments/single/${id}`);
+  return response.data;
+});
+
 
 // Slice definition
 const tournamentSlice = createSlice({

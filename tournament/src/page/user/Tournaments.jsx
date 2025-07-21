@@ -11,7 +11,6 @@ function Tournaments() {
     const dispatch =useDispatch();
 
     const data = useSelector((state)=>state?.GetTournamet?.items)
-console.log(data)
     useEffect(()=>{
         dispatch(GetTournamets())
     },[dispatch])
@@ -27,7 +26,7 @@ console.log(data)
            {data?.map((item)=> 
             ( 
             <Col md={3}>
-                <TournamentCard startDate={getAllTimes(item?.startDate)?.formattedDate} image={imageBaseUrl+ item?.file} name={item?.name} citie={item?.city?.name} />
+                <TournamentCard id={item?._id} startDate={getAllTimes(item?.startDate)?.formattedDate} image={imageBaseUrl+"/"+item?.file} name={item?.name} citie={item?.city?.name} />
             </Col>
             )
             )}

@@ -183,6 +183,7 @@ exports.updateContest = async (req, res) => {
       return res.status(404).send("Contest not found");
     }
 
+    // Update fields
     contest.name = name || contest.name;
     contest.description = description || contest.description;
     contest.cities = cities ? cities.split(',') : contest.cities;
@@ -190,10 +191,11 @@ exports.updateContest = async (req, res) => {
     contest.startDate = startDate || contest.startDate;
     contest.endDate = endDate || contest.endDate;
 
+    // Handle image update
     if (req.file) {
-      // Remove the old image
-      if (contest.image) {
-        fs.unlinkSync(contest.image);
+      // Remove the old image if it exists
+     if (contest.image && fs.existsSync(contest.image)) {
+        await fs.promises.unlink(contest.image);
       }
       contest.image = req.file.path;
     }
@@ -201,6 +203,7 @@ exports.updateContest = async (req, res) => {
     await contest.save();
     res.status(200).send(contest);
   } catch (error) {
+    console.error("Update Contest Error:", error);
     res.status(500).send(error.message);
   }
 };

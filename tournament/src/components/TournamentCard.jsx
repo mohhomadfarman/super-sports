@@ -4,6 +4,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 function TournamentCard({ image, name, citie, startDate, joinBtn, joined,id }) {
+
   return (
     <div className="games">
       <div className="banner_wrapper">
@@ -25,11 +26,18 @@ function TournamentCard({ image, name, citie, startDate, joinBtn, joined,id }) {
                 </p>
               </div>
             </div>
-            <Link to={`/contest/${id}`}><button
+            <Link to={`/tournaments/${id}`}><button
               className={`border-0`}
             >
             Open
-            </button></Link>
+            </button></Link> 
+            
+           {/* <button
+           onClick={()=>alert('Not Avaliable Yet!')}
+              className={`border-0`}
+            >
+            Open
+            </button> */}
             {/* <button
               onClick={joinBtn}
               disabled={joined}

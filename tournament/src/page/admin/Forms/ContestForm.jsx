@@ -13,15 +13,7 @@ function ContestForm({ handleClose, itemEdits }) {
   const categoriesList = useSelector((state) => state?.GetCategories?.items);
   const contest = useSelector((state) => state?.contests?.singleContest);
 
-  // const [formData, setFormData] = useState({
-  //   name: itemEdits?.name || "",
-  //   description: itemEdits?.description || "",
-  //   image: itemEdits?.image || "",
-  //   cities: itemEdits?.cities?.[0]?._id || '',
-  //   categories: itemEdits?.category?._id || '', 
-  //   startDate: itemEdits?.startDate?.split('T')[0] || "",
-  //   endDate: itemEdits?.endDate?.split('T')[0] || "",
-  // });
+
   const [formData, setFormData] = useState({
     name: itemEdits !== null ? itemEdits?.name : "",
     description: itemEdits !== null ? itemEdits?.description : "",

@@ -20,6 +20,8 @@ import ContestsRounds from "../page/admin/ContestsRounds";
 import PasswordChange from "../components/PasswordChange";
 import VotingOverview from "../components/VotingOverview";
 import SocialMediaIntegration from "../components/SocialMediaIntegration";
+import TournamentOpen from "../page/user/TournamentOpen";
+import TournamentRounds from "../page/admin/TournamentRounds";
 
 
 const role = getUserId()?.userRole;
@@ -35,6 +37,7 @@ const protects = {
         { path: "/", element: <Navigate to="/dashboard" /> },
         { path: "/dashboard", element: <Tournaments /> },
         { path: "/tournaments", element: <Tournaments /> },
+        { path: "/tournaments/:id", element: <TournamentOpen /> },
         { path: "/contests", element: <ContestsUser /> },
         { path: "/contest/:id", element: <ContestsOpen /> },
         { 
@@ -59,6 +62,7 @@ const protects = {
         { path: "/", element: <Navigate to="/dashboard" /> },
         { path: "/dashboard", element: <Dashboard /> },
         { path: "/tournaments", element: <Tournament /> },
+        {path:"/tournaments/:id", element:<TournamentRounds/>},
         { path: "/matches", element: <Matches /> },
         { path: "/contests", element: <Contests /> },
         { path: "/contest/:id", element: <ContestsRounds /> },

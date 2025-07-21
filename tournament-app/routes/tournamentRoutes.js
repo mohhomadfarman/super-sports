@@ -36,7 +36,7 @@ router.get("/", auth(), getTournaments);
  *     tags: [Tournaments]
  */
 
-router.get("/:id", auth(), getSingleTournaments);
+router.get("/single/:id", auth(), getSingleTournaments);
 
 router.put("/:id", auth("admin"),upload.single('file'), updateTournament);
 /**
